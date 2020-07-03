@@ -44,7 +44,8 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar'
+      'avatar',
+      'device'
     ])
   },
   methods: {
@@ -52,8 +53,9 @@ export default {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
+      // 登出后跳转至登录界面
       await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      this.$router.push(`./`)
     }
   }
 }
