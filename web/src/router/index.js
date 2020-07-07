@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '../components/Login'
+import Register from '../components/Register'
 
 Vue.use(Router)
 
@@ -22,6 +23,11 @@ export const constantRoutes = [
       component: () => import('../components/dashboard/index'),
       meta: { title: '首页', icon: 'dashboard' }
     }]
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register
   }
 ]
 

@@ -1,9 +1,9 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm"  class="login-form" auto-complete="on" label-position="left">
+    <el-form ref="loginForm" :model="loginForm"  :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">用户登录</h3>
+        <h3 class="title">用户注册</h3>
       </div>
 
       <el-form-item prop="username">
@@ -13,12 +13,11 @@
         <el-input
           ref="username"
           v-model="loginForm.username"
-          placeholder="Username"
+          placeholder="请输入用户名"
           name="username"
           type="text"
           tabindex="1"
-          auto-complete="on"
-        />
+          auto-complete="on"/>
       </el-form-item>
 
       <el-form-item prop="password">
@@ -30,24 +29,34 @@
           ref="password"
           v-model="loginForm.password"
           :type="passwordType"
-          placeholder="Password"
+          placeholder="请输入密码"
           name="password"
           tabindex="2"
           auto-complete="on"
           @keyup.enter.native="handleLogin"
         />
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
-        </span>
       </el-form-item>
-
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
-
+      
+      <el-form-item prop="password2">
+        <span class="svg-container" style="display: inline-block;width: 80px ">
+          <svg-icon icon-class="password2" />确认密码
+        </span>
+        <el-input
+          :key="passwordType"
+          ref="password"
+          v-model="loginForm.password2"
+          :type="passwordType"
+          placeholder="再次输入密码"
+          name="password"
+          tabindex="2"
+          auto-complete="on"
+          @keyup.enter.native="handleLogin"
+        />
+      </el-form-item>
+      <!-- <span>@{{passwordCheckValidate.errorText}}</span> -->
       <div class="tips">
-        <span style="display: inline-block;float: left">忘记密码</span>
-        <span style="display: inline-block;float: right" @click="toRegister"> 新用户注册</span>
-        <!-- <router-link to="/register">新用户注册</router-link> -->
-        
+        <span style="display: inline-block;float: left" @click="toLogin">返回登录</span>
+        <button style="display: inline-block;float: right;" @click="handleRegister"> 注册</button>        
       </div>
 
     </el-form>
@@ -55,33 +64,46 @@
 </template>
 
 <script>
-  // import { validUsername } from '@/utils/validate'
 
   export default {
     name: 'Login',
     data() {
-      // const validateUsername = (rule, value, callback) => {
-      //   if (!validUsername(value)) {
-      //     callback(new Error('Please enter the correct user name'))
-      //   } else {
-      //     callback()
-      //   }
-      // }
       const validatePassword = (rule, value, callback) => {
         if (value.length < 6) {
-          callback(new Error('The password can not be less than 6 digits'))
+          callback(new Error('密码不能少于6位'))
         } else {
           callback()
+        }
+      }
+      let validatePass2 = (rule, value, callback) => {
+        if (value === ""){
+          callback(new Error("请再次输入密码"));
+        }
+        else if(value !== this.loginForm.password) {
+          callback(new Error("两次输入密码不一致！"));
+        }
+        else {
+          callback();
+        }
+      }
+      let validateName = (rule, value, callback) => {
+        if (value === ""){
+          callback(new Error("用户名为空"));
+        }
+        else {
+          callback();
         }
       }
       return {
         loginForm: {
           username: '',
-          password: ''
+          password: '',
+          password2: ''
         },
         loginRules: {
-          username: [{ required: true, trigger: 'blur' }],
-          password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+          username: [{ required: true, trigger: 'blur', validator: validateName }],
+          password: [{ required: true, trigger: 'blur', validator: validatePassword }],
+          password2: [{ required: true, trigger: 'blur', validator: validatePass2 }]
         },
         loading: false,
         passwordType: 'password',
@@ -97,48 +119,69 @@
       }
     },
     methods: {
-      showPwd() {
-        if (this.passwordType === 'password') {
-          this.passwordType = ''
-        } else {
-          this.passwordType = 'password'
-        }
-        this.$nextTick(() => {
-          this.$refs.password.focus()
-        })
-      },
-      handleLogin() {
+      handleRegister() {
         this.$refs.loginForm.validate(valid => {
-          if (valid) {
-            this.loading = true
-            let param = new URLSearchParams()
-            param.append('username', this.loginForm.username)
-            param.append('password', this.loginForm.password)
-            let postdata = {
+            if (valid) {
+              let postdata = {
                 'username': this.loginForm.username,
                 'password': this.loginForm.password
               }
-            // postdata = qs.stringify(postdata)
-            // var postData = JSON.stringify(postdata)
-            this.$axios({
+              this.$axios({
               methods: 'get',
-              url:'http://localhost:8203/login',
+              url:'http://localhost:8203/register',
               headers: {'Content-type': 'application/x-www-form-urlencoded'},
-              params: postdata}).then(() => {
-              this.$router.push({ name: 'Dashboard' })
-              this.loading = false
-            }).catch(() => {
-              this.loading = false
-            })
-          } else {
-            console.log('error submit!!')
-            return false
-          }
-        })
-      },
+              params: postdata})
+              .then((response) => {
+                if(!response.success) {
+                  console.log(response.message)
+                  alter(response.message)
+                }
+                else {
+                  console.log(response.message)
+                  alter(response.message)
+                }
+              })
+            }
+          })
+        if (this.loginForm.username === '' || this.loginForm.password === '' || this.loginForm.password2 === '') {
+          alter("请填写完整注册信息")
+          console.log("注册信息不完整")
+          // this.$Message.info("注册信息不完整");
+        }
+        else if(this.loginForm.password !== this.loginForm.password2) {
+          alter("两次密码不一致")
+          console.log("两次密码不一致")
+          // this.$Message.info("两次密码不一致");
+        }
+        else {
+          this.$refs.loginForm.validate(valid => {
+            if (valid) {
+              let postdata = {
+                'username': this.loginForm.username,
+                'password': this.loginForm.password
+              }
+              this.$axios({
+              methods: 'get',
+              url:'http://localhost:8203/register',
+              headers: {'Content-type': 'application/x-www-form-urlencoded'},
+              params: postdata})
+              .then((response) => {
+                if(!response.success) {
+                  console.log(response.message)
+                  alter(response.message)
+                }
+                else {
+                  console.log(response.message)
+                  alter(response.message)
+                }
+              })
+            }
+          })
+      }
+        },
       // 跳转到注册界面
-      toRegister() {
-        this.$router.push({ path: '/register' })
+      toLogin() {
+        this.$router.push({ path: '/' })
       }
     }
   }

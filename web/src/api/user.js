@@ -21,4 +21,14 @@ export function logout() {
     url: '/vue-admin-template/user/logout',
     method: 'post'
   })
+
+}
+
+// 用户注册接口
+export function register(data) {
+  return request({
+    url: 'http://localhost:8203/register',
+    method: 'post',
+    params: data
+  })
 }
