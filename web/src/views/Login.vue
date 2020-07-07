@@ -45,7 +45,7 @@
 
       <div class="tips">
         <span style="display: inline-block;float: left">忘记密码</span>
-        <span style="display: inline-block;float: right"> 新用户注册</span>
+        <span style="display: inline-block;float: right"  @click="toRegister"> 新用户注册</span>
       </div>
 
     </el-form>
