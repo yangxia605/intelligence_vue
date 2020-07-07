@@ -53,6 +53,8 @@
 </template>
 
 <script>
+  // import { validUsername } from '@/utils/validate'
+
   export default {
     name: 'Login',
     data() {
@@ -71,7 +73,10 @@
         }
       }
       return {
-        loginForm: {},
+        loginForm: {
+          username: '',
+          password: ''
+        },
         loginRules: {
           username: [{ required: true, trigger: 'blur', validator: validateUsername }],
           password: [{ required: true, trigger: 'blur', validator: validatePassword }]
@@ -115,6 +120,10 @@
             return false
           }
         })
+      },
+      // 跳转到注册界面
+      toRegister() {
+        this.$router.push({ path: '/register' })
       }
     }
   }

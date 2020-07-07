@@ -6,13 +6,20 @@ import router from './router'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import store from './store'
-import '@/icons' // icon
+import '../src/icons' // icon
+import VueResource from 'vue-resource'
+import axios from 'axios'
+import qs from 'qs'
 import '@/styles/index.scss' // global css
 import components from '@/components/index.js';
 
 Vue.config.productionTip = false
 Vue.use(ElementUI);
 Vue.use(components);
+Vue.use(VueResource);
+axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded';
+Vue.prototype.$axios = axios
+Vue.prototype.$qs = qs
 
 /* eslint-disable no-new */
 new Vue({
