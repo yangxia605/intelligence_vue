@@ -13,7 +13,7 @@
         <el-input
           ref="username"
           v-model="loginForm.username"
-          placeholder="Username"
+          placeholder="请输入用户名"
           name="username"
           type="text"
           tabindex="1"
@@ -30,7 +30,7 @@
           ref="password"
           v-model="loginForm.password"
           :type="passwordType"
-          placeholder="Password"
+          placeholder="请输入密码"
           name="password"
           tabindex="2"
           auto-complete="on"
@@ -41,7 +41,7 @@
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
 
       <div class="tips">
         <span style="display: inline-block;float: left">忘记密码</span>
@@ -60,14 +60,14 @@
     data() {
       const validateUsername = (rule, value, callback) => {
         if (!value) {
-          callback(new Error('Please enter the user name'))
+          callback(new Error('请输入用户名'))
         } else {
           callback()
         }
       }
       const validatePassword = (rule, value, callback) => {
         if (!value) {
-          callback(new Error('Please enter the password'))
+          callback(new Error('请输入密码'))
         } else {
           callback()
         }
