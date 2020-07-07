@@ -7,7 +7,7 @@
       </div>
 
       <el-form-item prop="username">
-        <span class="svg-container" style="display: inline-block;width: 80px ">
+        <span class="svg-container" style="display: inline-block;width: 100px ">
           <svg-icon icon-class="user" />用户名
         </span>
         <el-input
@@ -21,7 +21,7 @@
       </el-form-item>
 
       <el-form-item prop="password">
-        <span class="svg-container" style="display: inline-block;width: 80px ">
+        <span class="svg-container" style="display: inline-block;width: 100px ">
           <svg-icon icon-class="password" />密码
         </span>
         <el-input
@@ -38,7 +38,7 @@
       </el-form-item>
       
       <el-form-item prop="password2">
-        <span class="svg-container" style="display: inline-block;width: 80px ">
+        <span class="svg-container" style="display: inline-block;width: 100px ">
           <svg-icon icon-class="password2" />确认密码
         </span>
         <el-input
@@ -54,9 +54,10 @@
         />
       </el-form-item>
       <!-- <span>@{{passwordCheckValidate.errorText}}</span> -->
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;"  @click="handleRegister">注册</el-button>
+
       <div class="tips">
-        <span style="display: inline-block;float: left" @click="toLogin">返回登录</span>
-        <button style="display: inline-block;float: right;" @click="handleRegister"> 注册</button>        
+        <span style="display: inline-block;float: left" @click="toLogin">返回登录界面</span>
       </div>
 
     </el-form>
