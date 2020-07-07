@@ -6,11 +6,13 @@ import router from './router'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import store from './store'
-import '../src/icons' // icon
+import '@/icons' // icon
+import '@/styles/index.scss' // global css
+import components from '@/components/index.js';
 
 Vue.config.productionTip = false
 Vue.use(ElementUI);
-
+Vue.use(components);
 
 /* eslint-disable no-new */
 new Vue({

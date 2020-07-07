@@ -13,7 +13,7 @@
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
           <router-link to="/">
             <el-dropdown-item>
-              Home
+              主页
             </el-dropdown-item>
           </router-link>
           <a target="_blank" href="https://github.com/PanJiaChen/vue-admin-template/">
@@ -55,7 +55,7 @@ export default {
     async logout() {
       // 登出后跳转至登录界面
       await this.$store.dispatch('user/logout')
-      this.$router.push(`./`)
+      this.$router.push(`../`)
     }
   }
 }

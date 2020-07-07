@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from '../components/Login'
+import Login from '../views/Login'
 
 Vue.use(Router)
 
@@ -19,10 +19,30 @@ export const constantRoutes = [
     children: [{
       path: '',
       name: 'Dashboard',
-      component: () => import('../components/dashboard/index'),
-      meta: { title: '首页', icon: 'dashboard' }
+      component: () => import('../views/dashboard/index'),
+      meta: { title: '首页', icon: 'el-icon-s-home' }
     }]
-  }
+  },
+  {
+    path: '/questionBank',
+    component: Layout,
+    children: [{
+      path: '',
+      name: 'questionBank',
+      component: () => import('../views/questionBank/index'),
+      meta: { title: '题库', icon: 'el-icon-s-claim' }
+    }]
+  },
+  {
+    path: '/aboutme',
+    component: Layout,
+    children: [{
+      path: '',
+      name: 'aboutme',
+      component: () => import('../views/aboutMe/index'),
+      meta: { title: '个人信息', icon: 'el-icon-s-custom' }
+    }]
+  },
 ]
 
 
