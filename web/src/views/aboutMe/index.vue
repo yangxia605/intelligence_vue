@@ -13,22 +13,22 @@
           <el-card :body-style="{ padding: '0px' }">
             <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
             <div style="padding: 14px;">
-              <span style="line-height: 1.7;font-size: 30px">name</span>
+              <span style="line-height: 1.7;font-size: 30px">{{userInfo.username}}</span>
             </div>
           </el-card>
         </el-col>
         <el-col :span="5" offset="1">
           <el-card class="box-card"  :body-style="{ padding: '0px' }">
-            <div class="text item"  align="left"><i class="el-icon-user">性别：</i></div>
-            <div class="text item"  align="left"><i class="el-icon-place">地区：</i></div>
-            <div class="text item"  align="left"><i class="el-icon-message">邮件：</i></div>
-            <div class="text item"  align="left"><i class="el-icon-suitcase">职业：</i></div>
+            <div class="text item"  align="left"><i class="el-icon-user">性别：{{userInfo.gender}}</i></div>
+            <div class="text item"  align="left"><i class="el-icon-place">地区：{{userInfo.location}}</i></div>
+            <div class="text item"  align="left"><i class="el-icon-message">邮件：{{userInfo.email}}</i></div>
+            <div class="text item"  align="left"><i class="el-icon-suitcase">职业：{{userInfo.career}}</i></div>
           </el-card>
         </el-col>
         <el-col :span="10" offset="1">
           <el-card class="box-card"  :body-style="{ padding: '0px' }">
             <div slot="header" class="clearfix" align="left" style="font-size: 20px"><span>个人简介</span></div>
-            <div class="text item"  align="left">这人很懒，没有留一下一点简介。</div>
+            <div class="text item"  align="left">{{userInfo.intro}}</div>
           </el-card>
         </el-col>
     </el-row>
@@ -72,6 +72,7 @@
 
 <script>
 import { getfavoritetopics } from '@/api/table'
+import axios from "axios";
 
   export default {
       name: "aboutMe",
@@ -81,9 +82,10 @@ import { getfavoritetopics } from '@/api/table'
           listLoading: true,
           // 收藏题目table格式
           favoritecolumns: [
-            {prop: 'topic_name', label: '题目名', align: 'center'},
-            {prop: 'time_limit', label: '时间限制', width: '200', align: 'center'},
-            {prop: 'space_limit', label: '空间限制', width: '200', align: 'center'}
+            {prop: 'id', show: false},
+            {prop: 'topic_name', label: '题目名', align: 'center', url: true},
+            {prop: 'time_limit', label: '时间限制', width: '200', align: 'center', url: false},
+            {prop: 'space_limit', label: '空间限制', width: '200', align: 'center', url: false}
           ],
           favoriteData: [],
           favoritepage: {
@@ -91,35 +93,44 @@ import { getfavoritetopics } from '@/api/table'
             pageSize: 5,
             sizes: [5, 10, 50, 100],
             total: 0
-          }
+          },
+          userInfo: {}
         }
       },
       created() {
         this.fetchData()
       },
-      mounted: {
-      },
+      mounted(){},
       methods: {
         fetchData(){
+          this.favoriteTopicData();
+          this.userData();
+        },
+        userData(){
+          axios.get("http://localhost:8080/userInfo").then(res => {
+            this.userInfo = res.data;
+
+            this.page.total = this.favoriteData.length;
+          }).catch(() => {
+          })
+        },
+        favoriteTopicData(){
           this.listLoading = true
-          getfavoritetopics().then(response => {
-            this.favoriteData = response.data.items
-            this.favoritepage.total = this.favoriteData.length;
+          // todo:getKPTopic
+          // todo:getKP
+          // 获取题目信息
+          axios.get("http://localhost:8080/favoritetopics").then(res => {
+            this.favoriteData = res.data;
+            /*
+            // todo: 获取topic部分信息（id name timelimit spacelimit）
+            // todo: 获取每一topic的KP
+            // this.topicsData = response.data.items
+            */
+            this.page.total = this.favoriteData.length;
             this.listLoading = false
           }).catch(() => {
-            this.favoriteData = [
-              {topic_name: 'A+B', time_limit: '1000', space_limit: '23102'},
-              {topic_name: '最大和', time_limit: '1020', space_limit: '21102'},
-              {topic_name: '最短路径', time_limit: '2310', space_limit: '15202'},
-              {topic_name: '字符串查找', time_limit: '3210', space_limit: '23432'},
-              {topic_name: '替换空格', time_limit: '1023', space_limit: '17602'},
-              {topic_name: '切割绳索', time_limit: '1960', space_limit: '32112'}
-            ];
-            this.favoritepage.total = this.favoriteData.length;
             this.listLoading = false
           })
-
-
         },
         // 重新渲染name列
         formatter(row, column, cellValue) {

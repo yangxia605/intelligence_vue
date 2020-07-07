@@ -5,8 +5,23 @@
       <slot name="table_oper"/>
       <template v-for="(item, index) in columns">
         <el-table-column
+          v-if="(item.show != false) && (item.url != false)"
           sortable
-          v-if="item.show != false"
+          :key="index"
+          :prop="item.prop"
+          :label="item.label"
+          :align="item.align?item.align:'center'"
+          :width="item.width"
+          :formatter="item.formatter?item.formatter : formatterValue"
+        >
+          <!--题目名：url=true 带跳转 /questionBank/Topicid -->
+          <template slot-scope="scope">
+            <el-link type="primary" :href="'/questionBank/'+ scope.row.id">{{scope.row.topic_name}}</el-link>
+          </template>
+        </el-table-column>
+        <el-table-column
+          v-if="(item.show != false) && (item.url != true)"
+          sortable
           :key="index"
           :prop="item.prop"
           :label="item.label"
