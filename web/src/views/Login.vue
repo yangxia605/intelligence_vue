@@ -7,7 +7,7 @@
       </div>
 
       <el-form-item prop="username">
-        <span class="svg-container" style="display: inline-block;width: 80px ">
+        <span class="svg-container" style="display: inline-block;width: 100px ">
           <svg-icon icon-class="user" />用户名
         </span>
         <el-input
@@ -22,7 +22,7 @@
       </el-form-item>
 
       <el-form-item prop="password">
-        <span class="svg-container" style="display: inline-block;width: 80px ">
+        <span class="svg-container" style="display: inline-block;width: 100px ">
           <svg-icon icon-class="password" />密码
         </span>
         <el-input
