@@ -32,3 +32,15 @@ export function register(data) {
     params: data
   })
 }
+
+// 用户注册接口
+export function forget(data) {
+  return request({
+    url: 'http://localhost:8204/forget',
+    method: 'post',
+    params: data
+  })
+}
+
+
+

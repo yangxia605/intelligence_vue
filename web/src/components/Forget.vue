@@ -1,9 +1,9 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm"  :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
+    <el-form ref="forgetForm" :model="forgetForm" :rules="forgetRules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">用户注册</h3>
+        <h3 class="title">忘记密码</h3>
       </div>
 
       <el-form-item prop="username">
@@ -12,12 +12,42 @@
         </span>
         <el-input
           ref="username"
-          v-model="loginForm.username"
+          v-model="forgetForm.username"
           placeholder="请输入用户名"
           name="username"
           type="text"
           tabindex="1"
           auto-complete="on"/>
+      </el-form-item>
+
+      <el-form-item prop="phone">
+        <span class="svg-container" style="display: inline-block;width: 100px ">
+          <svg-icon icon-class="phone" />手机号
+        </span>
+        <el-input
+          ref="phone"
+          v-model="forgetForm.phone"
+          placeholder="请输入手机号码"
+          name="phone"
+          tabindex="2"
+          auto-complete="on"
+        />
+      </el-form-item>
+
+      <el-button @click="sendcodeMsg" :disabled="disabled" style="width:100%;margin-bottom:30px;">发送验证码{{sendcode}}</el-button>
+
+      <el-form-item prop="code">
+        <span class="svg-container" style="display: inline-block;width: 100px ">
+          <svg-icon icon-class="code" />验证码
+        </span>
+        <el-input
+          ref="code"
+          v-model="forgetForm.node"
+          placeholder="请输入验证码"
+          name="code"
+          tabindex="3"
+          auto-complete="on"
+        />
       </el-form-item>
 
       <el-form-item prop="password">
@@ -27,13 +57,12 @@
         <el-input
           :key="passwordType"
           ref="password"
-          v-model="loginForm.password"
+          v-model="forgetForm.password"
           :type="passwordType"
           placeholder="请输入密码"
           name="password"
-          tabindex="2"
+          tabindex="4"
           auto-complete="on"
-          @keyup.enter.native="handleLogin"
         />
       </el-form-item>
 
@@ -44,31 +73,32 @@
         <el-input
           :key="passwordType"
           ref="password"
-          v-model="loginForm.password2"
+          v-model="forgetForm.password2"
           :type="passwordType"
           placeholder="再次输入密码"
           name="password"
-          tabindex="2"
+          tabindex="5"
           auto-complete="on"
-          @keyup.enter.native="handleLogin"
         />
       </el-form-item>
       <!-- <span>@{{passwordCheckValidate.errorText}}</span> -->
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;"  @click="handleLogin">注册</el-button>
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;"  @click="handleforget">修改密码</el-button>
 
       <div class="tips">
         <span style="display: inline-block;float: left" @click="toLogin">返回登录界面</span>
       </div>
+
+
 
     </el-form>
   </div>
 </template>
 
 <script>
-
   export default {
-    name: 'Login',
-    data() {
+    name: 'Forget',
+    data(){
+
       const validatePassword = (rule, value, callback) => {
         if (value.length < 6) {
           callback(new Error('密码不能少于6位'))
@@ -80,7 +110,7 @@
         if (value === ""){
           callback(new Error("请再次输入密码"));
         }
-        else if(value !== this.loginForm.password) {
+        else if(value !== this.forgetForm.password) {
           callback(new Error("两次输入密码不一致！"));
         }
         else {
@@ -95,14 +125,21 @@
           callback();
         }
       }
+
+
+
       return {
-        loginForm: {
+        forgetForm: {
           username: '',
+          phone:'',
+          code:'',
           password: '',
           password2: ''
         },
-        loginRules: {
+        forgetRules:{
           username: [{ required: true, trigger: 'blur', validator: validateName }],
+          phoner: [{ required: true, trigger: 'blur',}],
+          code:[{ required: true, trigger: 'blur' }],
           password: [{ required: true, trigger: 'blur', validator: validatePassword }],
           password2: [{ required: true, trigger: 'blur', validator: validatePass2 }]
         },
@@ -111,25 +148,54 @@
         redirect: undefined
       }
     },
-    watch: {
-      $route: {
-        handler: function(route) {
-          this.redirect = route.query && route.query.redirect
-        },
-        immediate: true
-      }
-    },
-    methods: {
-      handleRegister() {
-        this.$refs.loginForm.validate(valid => {
-            if (valid) {
-              let postdata = {
-                'username': this.loginForm.username,
-                'password': this.loginForm.password
-              }
-              this.$axios({
+    methods:{
+      //手机号正则判断
+      judgePhone() {
+        const reg = /^((13[0-9])|(14[5,7,9])|(15[^4])|(18[0-9])|(17[0,1,3,5,6,7,8]))\d{8}$/;
+        //var url="/nptOfficialWebsite/apply/sendSms?mobile="+this.ruleForm.phone;
+        if (this.forgetform.phone == '') {
+          this.$message("请输入手机号码")
+          return false;
+        } else if (!reg.test(this.forgetform.phone)) {
+          this.$message("手机号格式不正确")
+          return false;
+        } else {
+          return true;
+        }
+      },
+      //发送验证码
+      sendcodeMsg() {
+        let _this = this;
+        if (_this.judgePhone()) {
+          var num = 60;
+          var timer = setInterval(function () {
+            num--;
+            _this.disabled = true;
+            _this.sendcode = num + '秒后重新获取';
+            if (num === 0) {
+              _this.sendcode = '获取验证码';
+              _this.disabled = false;
+              clearInterval(timer)
+            }
+          }, 1000)
+          _this.$http.post("你的接口", qs.stringify(
+            {phoneNumber: _this.forgetform.phone}
+          )).then((res) => {
+            _this.getCode = res;
+          })
+        }
+
+      },
+      handleforget() {
+        this.$refs.forgetForm.validate(valid => {
+          if (valid) {
+            let postdata = {
+              'username': this.forgetForm.username,
+              'password': this.forgetForm.password
+            }
+            this.$axios({
               methods: 'get',
-              url:'http://localhost:8203/register',
+              url:'http://localhost:8204/forget',
               headers: {'Content-type': 'application/x-www-form-urlencoded'},
               params: postdata})
               .then((response) => {
@@ -142,44 +208,44 @@
                   alter(response.message)
                 }
               })
-            }
-          })
-        if (this.loginForm.username === '' || this.loginForm.password === '' || this.loginForm.password2 === '') {
+          }
+        })
+        if (this.forgetForm.username === '' || this.forget.password === '' || this.forget.password2 === '') {
           alter("请填写完整注册信息")
           console.log("注册信息不完整")
           // this.$Message.info("注册信息不完整");
         }
-        else if(this.loginForm.password !== this.loginForm.password2) {
+        else if(this.forgetForm.password !== this.forgetForm.password2) {
           alter("两次密码不一致")
           console.log("两次密码不一致")
           // this.$Message.info("两次密码不一致");
         }
         else {
-          this.$refs.loginForm.validate(valid => {
+          this.$refs.forgetForm.validate(valid => {
             if (valid) {
               let postdata = {
                 'username': this.loginForm.username,
                 'password': this.loginForm.password
               }
               this.$axios({
-              methods: 'get',
-              url:'http://localhost:8203/register',
-              headers: {'Content-type': 'application/x-www-form-urlencoded'},
-              params: postdata})
-              .then((response) => {
-                if(!response.success) {
-                  console.log(response.message)
-                  alter(response.message)
-                }
-                else {
-                  console.log(response.message)
-                  alter(response.message)
-                }
-              })
+                methods: 'get',
+                url:'http://localhost:8203/register',
+                headers: {'Content-type': 'application/x-www-form-urlencoded'},
+                params: postdata})
+                .then((response) => {
+                  if(!response.success) {
+                    console.log(response.message)
+                    alter(response.message)
+                  }
+                  else {
+                    console.log(response.message)
+                    alter(response.message)
+                  }
+                })
             }
           })
-      }
-        },
+        }
+      },
       // 跳转到注册界面
       toLogin() {
         this.$router.push({ path: '/' })

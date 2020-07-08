@@ -44,7 +44,7 @@
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
 
       <div class="tips">
-        <span style="display: inline-block;float: left">忘记密码</span>
+        <span style="display: inline-block;float: left"   @click="toForget">忘记密码</span>
         <span style="display: inline-block;float: right"  @click="toRegister"> 新用户注册</span>
       </div>
 
@@ -124,6 +124,10 @@
       // 跳转到注册界面
       toRegister() {
         this.$router.push({ path: '/register' })
+      },
+      // 跳转到忘记密码界面
+      toForget() {
+        this.$router.push({ path: '/forget' })
       }
     }
   }

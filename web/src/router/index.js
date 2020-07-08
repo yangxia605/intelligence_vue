@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '../views/Login'
 import Register from '../components/Register'
+import Forget from '../components/Forget'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export const constantRoutes = [
     path: '/register',
     name: 'Register',
     component: Register
+  },
+  {
+    path: '/forget',
+    name: 'Forget',
+    component: Forget
   },
   {
     path: '/questionBank',
