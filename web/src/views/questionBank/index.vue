@@ -22,9 +22,11 @@
   </div>
 </template>
 
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
 
   import { getAllTopics } from '@/api/table'
+  import axios from "axios";
 
   export default {
         name: "questionBank",
@@ -33,10 +35,11 @@
           listLoading: true,
           // 收藏题目table格式
           columns: [
-            {prop: 'topic_name', label: '题目名', width: '400', align: 'center'},
-            {prop: 'time_limit', label: '时间限制', width: '200', align: 'center'},
-            {prop: 'space_limit', label: '空间限制', width: '200', align: 'center'},
-            {prop: 'kps', label: '知识点', align: 'center'}
+            {prop: 'id', show: false},
+            {prop: 'topic_name', label: '题目名', align: 'center', url: true},
+            {prop: 'time_limit', label: '时间限制', width: '200', align: 'center', url: false},
+            {prop: 'space_limit', label: '空间限制', width: '200', align: 'center', url: false}
+            //{prop: 'kps', label: '知识点', align: 'center'}
           ],
           topicsData: [],
           page: {
@@ -50,19 +53,16 @@
       created() {
         this.fetchData()
       },
-      mounted: {
-      },
+      mounted(){},
       methods: {
         fetchData(){
           this.listLoading = true
           // todo:getKPTopic
           // todo:getKP
           // 获取题目信息
-          getAllTopics().then(response => {
-            this.topicsData = [
-              {topic_name: 'A+B', time_limit: '1000', space_limit: '23102', kps:"排序"},
-              {topic_name: '最大和', time_limit: '1020', space_limit: '21102', kps:"贪心"}
-            ];
+          var that = this;
+          axios.get("http://localhost:8080/alltopics").then(res => {
+            this.topicsData = res.data;
             /*
             // todo: 获取topic部分信息（id name timelimit spacelimit）
             // todo: 获取每一topic的KP
@@ -71,23 +71,14 @@
             this.page.total = this.topicsData.length;
             this.listLoading = false
           }).catch(() => {
-            this.topicsData = [
-              {topic_name: 'A+B', time_limit: '1000', space_limit: '23102', kps:"排序"},
-              {topic_name: '最大和', time_limit: '1020', space_limit: '21102', kps:"贪心"},
-              {topic_name: '最短路径', time_limit: '2310', space_limit: '15202', kps:"贪心"},
-              {topic_name: '字符串查找', time_limit: '3210', space_limit: '23432', kps:"字符串 查找"},
-              {topic_name: '替换空格', time_limit: '1023', space_limit: '17602', kps:"字符串"},
-              {topic_name: '切割绳索', time_limit: '1960', space_limit: '32112', kps:"数组"}
-            ];
-            this.page.total = this.topicsData.length;
             this.listLoading = false
           })
 
 
         },
-        // 重新渲染name列
+        // 重新渲染topic_name列
         formatter(row, column, cellValue) {
-          return 'hello ' + row.name;
+          return 'hello' + row.topic_name;
         },
         // 改变页面大小处理
         handleSizeChange(val) {
