@@ -27,8 +27,8 @@ export function logout() {
 // 用户注册接口
 export function register(data) {
   return request({
-    url: 'http://localhost:8203/register',
-    method: 'post',
+    url: '/register',
+    method: 'get',
     params: data
   })
 }
@@ -36,7 +36,7 @@ export function register(data) {
 // 用户注册接口
 export function forget(data) {
   return request({
-    url: 'http://localhost:8204/forget',
+    url: '/forget',
     method: 'post',
     params: data
   })

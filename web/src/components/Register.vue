@@ -129,7 +129,7 @@
               }
               this.$axios({
               methods: 'get',
-              url:'http://localhost:8203/register',
+              url:'/register',
               headers: {'Content-type': 'application/x-www-form-urlencoded'},
               params: postdata})
               .then((response) => {
@@ -163,7 +163,7 @@
               }
               this.$axios({
               methods: 'get',
-              url:'http://localhost:8203/register',
+              url:'http://localhost:8080/register',
               headers: {'Content-type': 'application/x-www-form-urlencoded'},
               params: postdata})
               .then((response) => {

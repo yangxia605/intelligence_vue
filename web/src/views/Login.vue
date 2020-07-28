@@ -123,7 +123,8 @@
       },
       // 跳转到注册界面
       toRegister() {
-        this.$router.push({ path: '/register' })
+        // this.$router.push({ path: '/register' })
+        this.$router.push({ path: '/beginner' })
       },
       // 跳转到忘记密码界面
       toForget() {

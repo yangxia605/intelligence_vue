@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Login from '../views/Login'
 import Register from '../components/Register'
 import Forget from '../components/Forget'
+import Beginner from '../views/Beginner'
 
 Vue.use(Router)
 
@@ -34,6 +35,11 @@ export const constantRoutes = [
     path: '/forget',
     name: 'Forget',
     component: Forget
+  },
+  {
+    path: '/beginner',
+    name: 'Beginner',
+    component: Beginner
   },
   {
     path: '/questionBank',
