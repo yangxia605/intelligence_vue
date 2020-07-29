@@ -48,7 +48,12 @@ export const constantRoutes = [
       path: '',
       name: 'questionBank',
       component: () => import('../views/questionBank/index'),
-      meta: { title: '题库', icon: 'el-icon-s-claim' }
+      meta: { title: '题库', icon: 'el-icon-s-claim' },
+    },
+    {
+      path: '1', //题目ID
+      hidden: true, //不在侧边栏线上
+      component: () => import('../views/questionPage/index'),
     }]
   },
   {

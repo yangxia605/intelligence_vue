@@ -12,11 +12,14 @@ import axios from 'axios'
 import qs from 'qs'
 import '@/styles/index.scss' // global css
 import components from '@/components/index.js';
+import { codemirror } from 'vue-codemirror'
+import 'codemirror/lib/codemirror.css'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI);
 Vue.use(components);
 Vue.use(VueResource);
+Vue.use(codemirror);
 axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded';
 Vue.prototype.$axios = axios
 Vue.prototype.$qs = qs
