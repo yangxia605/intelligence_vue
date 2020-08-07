@@ -51,7 +51,7 @@ export const constantRoutes = [
       meta: { title: '题库', icon: 'el-icon-s-claim' },
     },
     {
-      path: '1', //题目ID
+      path: ':topicId', //题目ID
       hidden: true, //不在侧边栏线上
       component: () => import('../views/questionPage/index'),
     }]
@@ -70,7 +70,7 @@ export const constantRoutes = [
 
 
 const createRouter = () => new Router({
-  // mode: 'history', // require service support
+  mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })

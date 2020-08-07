@@ -3,7 +3,7 @@
     <div class="dashboard-editor-container" style="padding-bottom: 60px; ">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: './' }">题库</el-breadcrumb-item>
-        <el-breadcrumb-item style="font-size: 20px;line-height:0.5;">题目名</el-breadcrumb-item>
+        <el-breadcrumb-item style="font-size: 20px;line-height:0.5;">{{topicData.topicName}}</el-breadcrumb-item>
       </el-breadcrumb>
       <el-divider></el-divider>
       <el-row :gutter="20">
@@ -11,36 +11,27 @@
           <div class="grid-content topic_window" >
             <div class="question-intr mt2 mb2">
               <div class="subject-item-wrap" align="left">
-                <div>时间限制：1111 s</div>
-                <div>空间限制：1111 M</div>
+                <div>时间限制：{{topicData.timeLimit}} s</div>
+                <div>空间限制：{{topicData.spaceLimit}} M</div>
                 <div>热度指数：1111</div>
                 <div>知识点：<el-tag>知识点标签</el-tag></div>
               </div>
             </div>
             <h3 class="subject-item-title" align="left">题目描述</h3>
             <div align="left">
-              题目描述题目描述题目描述题目描述题目描述题目描述
-              题目描述题目描述题目描述题目描述题目描述题目描述
-              题目描述题目描述题目描述题目描述题目描述题目描述
+              {{topicData.topicIntro}}
             </div>
             <h3 class="subject-item-title" align="left">输入描述</h3>
             <div class="intro" align="left">
-              输入描述输入描述输入描述输入描述输入描述输入描述
-              输入描述输入描述输入描述输入描述输入描述输入描述
-              输入描述输入描述输入描述输入描述输入描述输入描述
+              {{topicData.inputIntro}}
             </div>
             <h3 class="subject-item-title" align="left">输出描述</h3>
             <div class="intro" align="left">
-              输出描述输出描述输出描述输出描述输出描述输出描述
-              输出描述输出描述输出描述输出描述输出描述输出描述
-              输出描述输出描述输出描述输出描述输出描述输出描述
+              {{topicData.outputIntro}}
             </div>
             <h3 class="subject-item-title" align="left">示例</h3>
             <div class="intro" align="left">
-              输入输入输入
-              输入输入输入
-              输出输出输出
-              输出输出输出
+              {{topicData.topicPs}}
             </div>
           </div>
         </el-col>
@@ -75,13 +66,16 @@
       <el-row :gutter="20">
         <el-col :span="12" class="topic_tool_bar">
           <div class="tool_item">
-            <a href="" target="_blank"><i class="el-icon-s-opportunity"></i>题解</a>
+            <a href="#" target="_blank"><i class="el-icon-s-opportunity"></i>题解</a>
           </div>
           <div class="tool_item">
-            <a href="" target="_blank"><i class="el-icon-s-comment"></i>讨论</a>
+            <a href="#" target="_blank"><i class="el-icon-s-comment"></i>讨论</a>
           </div>
           <div class="tool_item">
-            <a href="" target="_blank"><i class="el-icon-edit"></i>笔记</a>
+            <a href="#" target="_blank"><i class="el-icon-edit"></i>笔记</a>
+          </div>
+          <div class="tool_item">
+            <a target="_blank"><i class="el-icon-star-off"></i>添加收藏</a>
           </div>
         </el-col>
         <el-col :span="12" class="code_tool_bar" align="left">
@@ -97,10 +91,33 @@
 
 <script>
 
+    import axios from "axios"
+
     export default {
         name: "index",
       data() {
         return {
+          topicData: {
+            id: 3,
+            topicName: '题目名',
+            timeLimit: '1111',
+            spaceLimit: '1111',
+            topicIntro: '题目描述题目描述题目描述题目描述题目描述题目描述\n' +
+              '              题目描述题目描述题目描述题目描述题目描述题目描述\n' +
+              '              题目描述题目描述题目描述题目描述题目描述题目描述',
+            inputIntro: '输入描述输入描述输入描述输入描述输入描述输入描述\n' +
+              '              输入描述输入描述输入描述输入描述输入描述输入描述\n' +
+              '              输入描述输入描述输入描述输入描述输入描述输入描述',
+            outputIntro: '输出描述输出描述输出描述输出描述输出描述输出描述\n' +
+              '              输出描述输出描述输出描述输出描述输出描述输出描述\n' +
+              '              输出描述输出描述输出描述输出描述输出描述输出描述',
+            topicPs: '              输入输入输入\n' +
+              '              输入输入输入\n' +
+              '              输出输出输出\n' +
+              '              输出输出输出',
+          },
+
+
           curCode: '# code here!',
           cmTheme: "blackboard", // codeMirror主题
           cmEditorMode: "Python(3.6)", // 编辑模式
@@ -113,6 +130,9 @@
           ],
           cmMode: "python", //codeMirror模式
         };
+      },
+      created() {
+          this.fenchData()
       },
       methods: {
         // 切换语言
@@ -139,6 +159,33 @@
           let content = this.$refs.cmEditor.getValue();
           console.log(content);
         },
+        fenchData(){
+          let topicID = this.$route.params.topicId
+          // axios.get("http://localhost:8080/topics/" + topicID).then(res => {
+          //   this.topicData.id = res.data.id
+          //   this.topicData.topicName = res.data.topicName
+          //   this.topicData.timeLimit = res.data.timeLimit
+          //   this.topicData.spaceLimit = res.data.spaceLimit
+          //   this.topicData.topicIntro = res.data.topicIntro
+          //   this.topicData.inputIntro = res.data.inputIntro
+          //   this.topicData.outputIntro = res.data.outputIntro
+          //   this.topicData.topicPs = res.data.topicPs
+          // }).catch(() => {
+          //
+          // })
+          this.$store.dispatch('topics/getTopicInfo', {topicID: topicID}).then(data => {
+              this.topicData.id = data.id
+              this.topicData.topicName = data.topicName
+              this.topicData.timeLimit = data.timeLimit
+              this.topicData.spaceLimit = data.spaceLimit
+              this.topicData.topicIntro = data.topicIntro
+              this.topicData.inputIntro = data.inputIntro
+              this.topicData.outputIntro = data.outputIntro
+              this.topicData.topicPs = data.topicPs
+          }).catch(error => {
+
+          })
+        }
       }
     }
 </script>

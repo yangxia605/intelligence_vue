@@ -1,6 +1,6 @@
-import { login, logout } from '../../api/user'
-import { getToken, setToken, removeToken } from '../../utils/auth'
-import { resetRouter } from '../../router'
+import { getTopicInfo } from '../../api/topics'
+import {getToken, removeToken, setToken} from "../../utils/auth";
+import {resetRouter} from "../../router";
 
 const getDefaultState = () => {
   return {
@@ -28,16 +28,15 @@ const mutations = {
 }
 
 const actions = {
-  // user login
-  login({ commit }, userInfo) {
-    const { username, password } = userInfo
+  getTopicInfo({ commit }, { topicID }) {
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(res => {
-        const accessToken = res.accessToken
-        commit('SET_TOKEN', accessToken)
-        setToken(accessToken)
-        localStorage.setItem('authorization',accessToken);
-        resolve()
+      getTopicInfo(topicID ).then(res => {
+        //let token = localStorage.getItem('authorization');
+        // const data = res
+        // if (!data) {
+        //   reject('Get Topic failed')
+        // }
+        resolve(res)
       }).catch(error => {
         reject(error)
       })
@@ -65,28 +64,7 @@ const actions = {
   //   })
   // },
 
-  // user logout
-  logout({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
-        removeToken() // must remove  token  first
-        resetRouter()
-        commit('RESET_STATE')
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
-    })
-  },
 
-  // remove token
-  resetToken({ commit }) {
-    return new Promise(resolve => {
-      removeToken() // must remove  token  first
-      commit('RESET_STATE')
-      resolve()
-    })
-  }
 }
 
 export default {
@@ -95,4 +73,3 @@ export default {
   mutations,
   actions
 }
-
