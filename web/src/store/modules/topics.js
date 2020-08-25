@@ -1,4 +1,4 @@
-import { getTopicInfo } from '../../api/topics'
+import { getTopicInfo, cancelFav, addFav, submitAnswer, getAnswerStatus } from '../../api/topics'
 import {getToken, removeToken, setToken} from "../../utils/auth";
 import {resetRouter} from "../../router";
 
@@ -43,6 +43,45 @@ const actions = {
     })
   },
 
+  cancelFav({ commit }, { topicID }) {
+    return new Promise((resolve, reject) => {
+      cancelFav(topicID ).then(res => {
+        resolve(res)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  addFav({ commit }, { topicID }) {
+    return new Promise((resolve, reject) => {
+      addFav(topicID ).then(res => {
+        resolve(res)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  submitAnswer({ commit }, answerInfo) {
+    return new Promise((resolve, reject) => {
+      submitAnswer(answerInfo).then(res => {
+          resolve(res)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  getAnswerStatus({ commit }, { answerId }) {
+    return new Promise((resolve, reject) => {
+      getAnswerStatus(answerId ).then(res => {
+        resolve(res)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
   // get user info
   // getInfo({ commit, state }) {
   //   return new Promise((resolve, reject) => {
