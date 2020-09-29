@@ -110,16 +110,24 @@
             topicPs: '获取示例...',
             favorite: false
           },
+
+          subStatus: false,  //提交代码状态
+          answerId: 0,
+          getanswerStatus: false,   //获取反馈状态
+
           AnswerData: {
             topicID: '',
             content: '',
             languageID: 0,
             languageName: ''
           },
-          subStatus: false,
-          answerId: 0,
-          getanswerStatus: false,
-          answerStatus: '',
+
+          answerStatusData: {
+            answerStatus: '',
+            answerStatusMsg:'',
+            executeDetailMsg:'',
+          },
+
 
 
           curCode: '# code here!',
@@ -137,6 +145,9 @@
       },
       created() {
           this.fenchData()
+      },
+      destroyed(){
+        clearInterval(this.myInterval)
       },
       methods: {
         // 切换语言
@@ -247,8 +258,15 @@
           this.$store.dispatch('topics/getAnswerStatus', {answerId: this.answerId}).then(data => {
             if(data.success){
               this.getanswerStatus = true
-              this.answerStatus = data.data['answerStatus']
-              result = '<strong>' + this.answerStatus + '</strong>'
+              this.answerStatusData.answerStatus = data.data['answerStatus']
+              this.answerStatusData.answerStatusMsg = data.data['answerStatusMsg']
+              this.answerStatusData.executeDetailMsg = data.data['executeDetailMsg']
+              if(!data.data['answerStatus']){
+                result = '<strong>答题情况: </strong><strong style="color:red">Failed!</strong><br/>' +
+                  '<strong>DetailInfo: </strong><strong style="color:orange">' + this.answerStatusData.executeDetailMsg + '</strong><br/>'
+              }else{
+                result = '<strong  style="color:green">Accpted!</strong><br/>'
+              }
               this.createResultBox(result)
             }
           }).catch(error => {
@@ -310,46 +328,13 @@
           }).catch(e=>e);
         },
         createResultBox(result){
-
           if(this.answerId!==0 && this.subStatus){
-
-              this.$alert(
-                result,
-                '答题情况',
-                {
-                  dangerouslyUseHTMLString: true
-                }).catch(e=>e);
-
-
-            // this.$msgbox({
-            //   title: '答题情况',
-            //   message: this.getanswerStatus,
-            //   confirmButtonText: '确认',
-            //   closeOnClickModal: false,
-            //   closeOnPressEscape: false,
-            //   closeOnHashChange: false,
-            //   dangerouslyUseHTMLString: true,
-            //   beforeClose: ((action, instance) => {
-            //     if(action === 'confirm') {
-            //       instance.message = 'beforeClose'
-            //     }
-            //
-            //   })
-            // }).then((instance) => {
-            //   // setTimeout(() => {
-            //   //   if (this.getanswerStatus) {
-            //   //     instance.dangerouslyUseHTMLString = true
-            //   //     instance.confirmButtonLoading = false
-            //   //     instance.message = '<strong>' + this.answerStatus + '</strong>'
-            //   //     instance.confirmButtonText = '确认'
-            //   //   } else {
-            //   //     instance.dangerouslyUseHTMLString = true
-            //   //     instance.confirmButtonLoading = false
-            //   //     instance.message = '<strong>获取失败</strong>'
-            //   //     instance.confirmButtonText = '确认'
-            //   //   }
-            //   // }, 2000);
-            // }).catch(e=>e);
+            this.$alert(
+              result,
+              '答题情况',
+              {
+                dangerouslyUseHTMLString: true
+              }).catch(e=>e);
           }else{
             this.$alert(
               '<strong>尚未提交代码，请重新提交代码</strong>',
