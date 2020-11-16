@@ -76,9 +76,9 @@
                 placeholder="帖子、文章、试题"
                 style="color:#000; text-color:ffd04b"
                 align="right"
-                v-model="search"
+                v-model="searchsome"
               />
-              <button @click>搜索</button>
+              <button v-on:click="searchall">搜索</button>
             </div>
           </el-menu>
         </el-col>
@@ -110,7 +110,7 @@
               <div class="coding-search" style="height:auto"></div>
               <div class="coding-table-box">
                 <template>
-                  <el-button @click="resetknowledgePointsTopicsFilter">清除知识点过滤器</el-button>
+                  <el-button v-on:click="reset">清除知识点过滤器</el-button>
                   <el-button @click="resettopiclevelFilter">清除难度过滤器</el-button>
                   <input
                     type="text"
@@ -118,9 +118,13 @@
                     id
                     placeholder="题目"
                     style="color:#000; text-color:ffd04b"
-                    v-model="search"
+                    v-model="searchpname"
                   />
-                  <button @click>搜索</button>
+                  <button v-on:click="searchid">搜索</button>
+                  <!--
+                  <button v-on:click="orderidup">向上排序</button>
+                  <button v-on:click="orderiddown">向下排序</button>
+                  -->
                   <el-table ref="filterTable"
                             :data="tableData" stripe="true" style="width:100%"
                             :default-sort = "{prop: 'id', order: 'descending'}"
@@ -158,10 +162,10 @@
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     :current-page="currentPage"
-                    :page-sizes="[5, 10, 20, 30]"
+                    :page-sizes="[10, 20, 40, 50]"
                     :page-size="pagesize"
                     layout="total, sizes, prev, pager, next, jumper"
-                    :total="total">
+                   :total="total">
                   </el-pagination>
                 </template>
               </div>
@@ -180,11 +184,11 @@
           </section>
           <div class="staticmessage">
             <div class="item">
-              <span class="num">0/3</span>
+              <span class="num">0/10000</span>
               <span class="text">已挑战</span>
             </div>
             <div class="item">
-              <span class="num">0/3</span>
+              <span class="num">0/10000</span>
               <span class="text">已通过</span>
             </div>
             <div class="item">
@@ -212,9 +216,9 @@
         listLoading: true,
         chartPie: null,
         tableData: [],
-        pagesize:5,
+        pagesize:10,
         currentPage:1,
-        total:10
+        total:10000
       }
     },
     watch: {
@@ -228,23 +232,23 @@
     },
     created() {
       this.fetchData()
+      this.gettabledata
     },
     mounted: function () {
       this.drawCharts()
     },
     methods: {
+      // 获取题目信息
       fetchData(){
         this.listLoading = true
         var that = this;
-        // 获取题目信息
         this.$axios({
           url:"http://localhost:8080/getAllCoding",
           method: 'post',
           data: {
             page: this.currentPage,
-            offset: this.total
+            offset:this.pagesize
           },
-          contentType: 'application/json;charset=UTF-8'
         }).then(res => {
           this.tableData = res.data.data;
           this.page.total = this.tableData.length;
@@ -252,8 +256,95 @@
         }).catch(() => {
           this.listLoading = false
         })
-
       },
+      //获取用户做题情况
+      /*getuserpass(){
+        var that = this;
+        this.$axios({
+          url:'http://localhost:8080/getUserPass',
+          method:'get',
+          data:{
+            userId:
+          },
+        }).then(res =>{
+          this.challengeCount = res.config
+          this.passCount = this.
+        })
+      },
+      */
+      // 搜索题目
+      searchid(){
+        var that = this;
+        this.$axios({
+          url:"http://localhost:8080/getGlobalSearch?keywords=searchpanme",
+          method: 'post',
+          data: {
+            page: this.currentPage,
+            offset: this.total
+          },
+        }).then(res => {
+          this.page.total = this.tableData.length;
+        }).catch(() => {
+        })
+      },
+      //搜索
+      searchall(){
+        var that = this
+        this.$axios({
+          url:"http://localhost:8080/getByPName?keywords=searchsome",
+          method: 'get',
+        }).then(res => {
+          this.page.total = this.tableData.length;
+        }).catch(() => {
+        })
+      },
+      // 递增的排序
+      orderidup(){
+        var that = this;
+        this.$axios({
+          url:"http://localhost:8080/getByOrder?order=ture",
+          method: 'post',
+          data: {
+            page: this.currentPage,
+            offset: this.total
+          },
+        }).then(res => {
+          this.page.total = this.tableData.length;
+        }).catch(() => {
+        })
+      },
+      // 递减的排序
+      orderiddown(){
+        var that = this;
+        this.$axios({
+          url:"http://localhost:8080/getByOrder?order=false",
+          method: 'post',
+          data: {
+            page: this.currentPage,
+            offset: this.total
+          },
+        }).then(res => {
+          this.page.total = this.tableData.length;
+        }).catch(() => {
+        })
+      },
+
+      // 重置
+      reset(){
+        var that = this;
+        this.$axios({
+          url:"http://localhost:8080/getReset",
+          method: 'post',
+          data: {
+            page: this.currentPage,
+            offset: this.total
+          },
+        }).then(res => {
+          this.page.total = this.tableData.length;
+        }).catch(() => {
+        })
+      },
+      //饼状图
       drawPieChart() {
         this.chartPie = echarts.init(document.getElementById('chartPie'));
         this.chartPie.setOption({
@@ -275,8 +366,8 @@
               radius: '55%',
               center: ['50%', '60%'],
               data: [
-                {value: 335, name: '已通过'},
-                {value: 135, name: '未通过'},
+                {value: 0, name: '已通过'},
+                {value: 0, name: '未通过'},
                 {value: 1548, name: '未提交'}
               ],
               itemStyle: {
@@ -339,12 +430,16 @@
         const property = column['property'];
         return row[property] === value;
       },
+      // 改变页面大小处理
       handleSizeChange(val) {
-        this.currentPage = 1;
-        this.pageSize = val;;
+        this.pageSize = val;
+        this.pagesize = this.pageSize
+        this.fetchData();
       },
+      // 翻页处理
       handleCurrentChange(val) {
         this.currentPage = val;
+        this.fetchData();
       },
     }
   }
