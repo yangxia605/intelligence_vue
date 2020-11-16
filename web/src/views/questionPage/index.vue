@@ -75,11 +75,13 @@
             <a href="#" target="_blank"><i class="el-icon-edit"></i>笔记</a>
           </div>
           <div class="tool_item">
-            <a target="_blank"><i class="el-icon-star-off"></i>添加收藏</a>
+            <a v-if="topicData.favorite" @click="cancelFav"><i class="el-icon-star-on"></i>取消收藏</a>
+            <a v-else  @click="addFav"><i class="el-icon-star-off"></i>添加收藏</a>
           </div>
         </el-col>
         <el-col :span="12" class="code_tool_bar" align="left">
-          <el-button type="primary" style="padding: 10px;">保存并提交代码</el-button>
+          <el-button type="primary" style="padding: 10px;"   @click="createSubBox">保存并提交代码</el-button>
+          <el-button type="success" v-if='subStatus' style="padding: 10px; " @click="getAnswerStatus">查看提交结果</el-button>
         </el-col>
       </el-row>
     </div>
@@ -98,24 +100,26 @@
       data() {
         return {
           topicData: {
-            id: 3,
+            id: 0,
             topicName: '题目名',
             timeLimit: '1111',
             spaceLimit: '1111',
-            topicIntro: '题目描述题目描述题目描述题目描述题目描述题目描述\n' +
-              '              题目描述题目描述题目描述题目描述题目描述题目描述\n' +
-              '              题目描述题目描述题目描述题目描述题目描述题目描述',
-            inputIntro: '输入描述输入描述输入描述输入描述输入描述输入描述\n' +
-              '              输入描述输入描述输入描述输入描述输入描述输入描述\n' +
-              '              输入描述输入描述输入描述输入描述输入描述输入描述',
-            outputIntro: '输出描述输出描述输出描述输出描述输出描述输出描述\n' +
-              '              输出描述输出描述输出描述输出描述输出描述输出描述\n' +
-              '              输出描述输出描述输出描述输出描述输出描述输出描述',
-            topicPs: '              输入输入输入\n' +
-              '              输入输入输入\n' +
-              '              输出输出输出\n' +
-              '              输出输出输出',
+            topicIntro: '获取题目描述...',
+            inputIntro: '获取输入描述...',
+            outputIntro: '获取输出描述...',
+            topicPs: '获取示例...',
+            favorite: false
           },
+          AnswerData: {
+            topicID: '',
+            content: '',
+            languageID: 0,
+            languageName: ''
+          },
+          subStatus: false,
+          answerId: 0,
+          getanswerStatus: false,
+          answerStatus: '',
 
 
           curCode: '# code here!',
@@ -158,21 +162,10 @@
         getValue() {
           let content = this.$refs.cmEditor.getValue();
           console.log(content);
+          return content
         },
         fenchData(){
           let topicID = this.$route.params.topicId
-          // axios.get("http://localhost:8080/topics/" + topicID).then(res => {
-          //   this.topicData.id = res.data.id
-          //   this.topicData.topicName = res.data.topicName
-          //   this.topicData.timeLimit = res.data.timeLimit
-          //   this.topicData.spaceLimit = res.data.spaceLimit
-          //   this.topicData.topicIntro = res.data.topicIntro
-          //   this.topicData.inputIntro = res.data.inputIntro
-          //   this.topicData.outputIntro = res.data.outputIntro
-          //   this.topicData.topicPs = res.data.topicPs
-          // }).catch(() => {
-          //
-          // })
           this.$store.dispatch('topics/getTopicInfo', {topicID: topicID}).then(data => {
               this.topicData.id = data.id
               this.topicData.topicName = data.topicName
@@ -182,10 +175,190 @@
               this.topicData.inputIntro = data.inputIntro
               this.topicData.outputIntro = data.outputIntro
               this.topicData.topicPs = data.topicPs
+              this.topicData.favorite = data.favorite
           }).catch(error => {
-
           })
-        }
+        },
+        cancelFav(){
+          let topicID = this.$route.params.topicId
+          this.$store.dispatch('topics/cancelFav', {topicID: topicID}).then(data => {
+            if(data.success){
+              this.topicData.favorite = false
+            }
+          }).catch(error => {
+          })
+        },
+        addFav(){
+          let topicID = this.$route.params.topicId
+          this.$store.dispatch('topics/addFav', {topicID: topicID}).then(data => {
+            if(data.success){
+              this.topicData.favorite = true
+            }
+          }).catch(error => {
+          })
+        },
+        submitAnswer(){
+          this.subStatus = false
+          this.answerId = 0
+          let formdata = new FormData()
+          const content = this.getValue()
+          if(content){
+            formdata.append('topicId',this.$route.params.topicId)
+            formdata.append('content',content)
+            this.AnswerData.topicID = this.$route.params.topicId
+            this.AnswerData.content = content
+            let languageType = this.cmMode
+            if(languageType === 'python'){
+              formdata.append('languageName','PYTHON')
+              formdata.append('languageId', 3)
+              this.AnswerData.languageName = 'PYTHON'
+              this.AnswerData.languageId = 3
+            }else if(languageType === 'text/x-java'){
+              formdata.append('languageName','JAVA')
+              formdata.append('languageId', 1)
+              this.AnswerData.languageName = 'JAVA'
+              this.AnswerData.languageId = 1
+            }else if(languageType === 'text/x-c++src'){
+              formdata.append('languageName','C++')
+              formdata.append('languageId', 2)
+              this.AnswerData.languageName = 'C++'
+              this.AnswerData.languageId = 2
+            }else {
+              formdata.append('languageName','Others')
+              formdata.append('languageId', 0)
+              this.AnswerData.languageName = 'Others'
+              this.AnswerData.languageId = 0
+            }
+
+            this.$store.dispatch('topics/submitAnswer', formdata).then(data => {
+              if(data.success){
+                this.subStatus = true
+                this.answerId = data.data["answerId"]
+              }
+            }).catch(error => {
+            })
+          }else {
+          }
+        },
+        getAnswerStatus(){
+          this.getanswerStatus = false
+          let result = "<strong>代码正在执行，请稍后查看运行结果...</strong>"
+
+          this.$store.dispatch('topics/getAnswerStatus', {answerId: this.answerId}).then(data => {
+            if(data.success){
+              this.getanswerStatus = true
+              this.answerStatus = data.data['answerStatus']
+              result = '<strong>' + this.answerStatus + '</strong>'
+              this.createResultBox(result)
+            }
+          }).catch(error => {
+            result = '<strong>获取失败</strong>'
+            this.createResultBox(result)
+          })
+
+        },
+        createSubBox(){
+          const h = this.$createElement;
+          this.$msgbox({
+            title: '提交代码',
+            message: "确认是否提交代码",
+            showCancelButton: true,
+            confirmButtonText: '确定提交',
+            cancelButtonText: '取消',
+            closeOnClickModal: false,
+            closeOnPressEscape: false,
+            closeOnHashChange: false,
+            confirmButtonClass: false,
+            beforeClose: (action, instance, done) => {
+              if (action === 'confirm') {
+                instance.message = "提交代码中，请勿关闭弹窗..."
+                instance.confirmButtonLoading = true;
+                instance.showCancelButton = false
+                instance.showClose = false
+                instance.confirmButtonText = '执行中...';
+
+                //提交代码
+                this.submitAnswer()
+
+                setTimeout(() => {
+
+                  if(this.subStatus){
+                    setTimeout(() => {
+                      instance.showCancelButton = true
+                      instance.showClose = true
+                      instance.showConfirmButton = false
+                      instance.confirmButtonLoading = false;
+                      instance.message = "提交成功，关闭弹窗查看答题情况"
+                      instance.cancelButtonText= '查看答题情况'
+                    }, 300);
+                  }else {
+                    setTimeout(() => {
+                      instance.showCancelButton = true
+                      instance.showClose = true
+                      instance.confirmButtonLoading = false;
+                      instance.message = "提交失败，是否再次尝试"
+                      instance.confirmButtonText = '再次提交';
+                    }, 300);
+                  }
+                }, 2000);
+              } else {
+                done();//关闭弹窗
+              }
+            },
+          }).then(() => {
+
+          }).catch(e=>e);
+        },
+        createResultBox(result){
+
+          if(this.answerId!==0 && this.subStatus){
+
+              this.$alert(
+                result,
+                '答题情况',
+                {
+                  dangerouslyUseHTMLString: true
+                }).catch(e=>e);
+
+
+            // this.$msgbox({
+            //   title: '答题情况',
+            //   message: this.getanswerStatus,
+            //   confirmButtonText: '确认',
+            //   closeOnClickModal: false,
+            //   closeOnPressEscape: false,
+            //   closeOnHashChange: false,
+            //   dangerouslyUseHTMLString: true,
+            //   beforeClose: ((action, instance) => {
+            //     if(action === 'confirm') {
+            //       instance.message = 'beforeClose'
+            //     }
+            //
+            //   })
+            // }).then((instance) => {
+            //   // setTimeout(() => {
+            //   //   if (this.getanswerStatus) {
+            //   //     instance.dangerouslyUseHTMLString = true
+            //   //     instance.confirmButtonLoading = false
+            //   //     instance.message = '<strong>' + this.answerStatus + '</strong>'
+            //   //     instance.confirmButtonText = '确认'
+            //   //   } else {
+            //   //     instance.dangerouslyUseHTMLString = true
+            //   //     instance.confirmButtonLoading = false
+            //   //     instance.message = '<strong>获取失败</strong>'
+            //   //     instance.confirmButtonText = '确认'
+            //   //   }
+            //   // }, 2000);
+            // }).catch(e=>e);
+          }else{
+            this.$alert(
+              '<strong>尚未提交代码，请重新提交代码</strong>',
+              '答题情况',
+              {
+                dangerouslyUseHTMLString: true
+              }).catch(e=>e);
+          }
+        },
       }
     }
 </script>
