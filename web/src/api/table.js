@@ -23,3 +23,11 @@ export function getAllTopics() {
     method: 'get',
   })
 }
+
+export function getAll(data) {
+  return request({
+    url: '/getAllCoding',
+    method: 'post',
+    data
+  })
+}

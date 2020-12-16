@@ -33,7 +33,7 @@ export function register(data) {
   })
 }
 
-// 用户注册接口
+// 用户忘记密码接口
 export function forget(data) {
   return request({
     url: '/forget',
