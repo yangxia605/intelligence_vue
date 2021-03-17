@@ -110,8 +110,10 @@
               <div class="coding-search" style="height:auto"></div>
               <div class="coding-table-box">
                 <template>
+                  <!--
                   <el-button v-on:click="reset">清除知识点过滤器</el-button>
                   <el-button @click="resettopiclevelFilter">清除难度过滤器</el-button>
+                  -->
                   <input
                     type="text"
                     name="search-bar"
@@ -120,11 +122,12 @@
                     style="color:#000; text-color:ffd04b"
                     v-model="searchpname"
                   />
-                  <button v-on:click="searchid">搜索</button>
+                  <el-button type="primary" icon="el-icon-search" v-on:click="searchid">搜索</el-button>
                   <!--
-                  <button v-on:click="orderidup">向上排序</button>
-                  <button v-on:click="orderiddown">向下排序</button>
+                  <button v-on:click="reset">重置搜索</button>
                   -->
+                  <el-button type="primary" icon="el-icon-top" v-on:click="orderidup"></el-button>
+                  <el-button type="primary" icon="el-icon-bottom" v-on:click="orderiddown"></el-button>
                   <el-table ref="filterTable"
                             :data="tableData" stripe="true" style="width:100%"
                             :default-sort = "{prop: 'id', order: 'descending'}"
@@ -152,11 +155,13 @@
                     </el-table-column>
                     <el-table-column prop="passrate" label="通过率" sortable column-key='passrate'></el-table-column>
                   </el-table>
-                  <!--<el-pagination
+                  <!--
+                  <el-pagination
                     background
                     layout="prev, pager, next"
                     :total="1000">
-                  </el-pagination>-->
+                  </el-pagination>
+                  -->
                   <!--<span class="demonstration">完整功能</span> -->
                   <el-pagination
                     @size-change="handleSizeChange"
@@ -165,7 +170,7 @@
                     :page-sizes="[10, 20, 40, 50]"
                     :page-size="pagesize"
                     layout="total, sizes, prev, pager, next, jumper"
-                   :total="total">
+                    :total="total">
                   </el-pagination>
                 </template>
               </div>
@@ -184,11 +189,11 @@
           </section>
           <div class="staticmessage">
             <div class="item">
-              <span class="num">0/10000</span>
+              <span class="num">0</span>
               <span class="text">已挑战</span>
             </div>
             <div class="item">
-              <span class="num">0/10000</span>
+              <span class="num">0</span>
               <span class="text">已通过</span>
             </div>
             <div class="item">
@@ -218,7 +223,12 @@
         tableData: [],
         pagesize:10,
         currentPage:1,
-        total:10000
+        challengeCount: null,
+        passCount:null,
+        postCount:null,
+        total:null,
+        userid:null,
+        order:true,
       }
     },
     watch: {
@@ -231,8 +241,8 @@
       }
     },
     created() {
-      this.fetchData()
-      this.gettabledata
+      this.fetchData();
+      //this.getuserpass();
     },
     mounted: function () {
       this.drawCharts()
@@ -241,7 +251,6 @@
       // 获取题目信息
       fetchData(){
         this.listLoading = true
-        var that = this;
         this.$axios({
           url:"http://localhost:8080/getAllCoding",
           method: 'post',
@@ -251,30 +260,32 @@
           },
         }).then(res => {
           this.tableData = res.data.data;
-          this.page.total = this.tableData.length;
+          this.userid = res.data.data.userId;
           this.listLoading = false
         }).catch(() => {
           this.listLoading = false
         })
       },
       //获取用户做题情况
-      /*getuserpass(){
-        var that = this;
+      /*
+      getuserpass() {
         this.$axios({
           url:'http://localhost:8080/getUserPass',
           method:'get',
           data:{
-            userId:
+            userId: this.userid
           },
         }).then(res =>{
-          this.challengeCount = res.config
-          this.passCount = this.
+          this.challengeCount = res.challengeCount;
+          this.passCount = res.passCount;
+          this.postCount = res.postCount;
+          this.total = res.totalTopics;
         })
       },
       */
       // 搜索题目
       searchid(){
-        var that = this;
+        this.listLoading = true
         this.$axios({
           url:"http://localhost:8080/getGlobalSearch?keywords=searchpanme",
           method: 'post',
@@ -283,65 +294,76 @@
             offset: this.total
           },
         }).then(res => {
-          this.page.total = this.tableData.length;
+          this.tableData = res.data.data;
+          this.listLoading = false
         }).catch(() => {
+          this.listLoading = false
         })
       },
       //搜索
       searchall(){
-        var that = this
         this.$axios({
           url:"http://localhost:8080/getByPName?keywords=searchsome",
           method: 'get',
         }).then(res => {
-          this.page.total = this.tableData.length;
+          this.tableData = res.data.data;
+          this.listLoading = false
         }).catch(() => {
+          this.listLoading = false
         })
       },
       // 递增的排序
       orderidup(){
-        var that = this;
+        this.listLoading = true
         this.$axios({
-          url:"http://localhost:8080/getByOrder?order=ture",
+          url:"http://localhost:8080/getByOrder?order=true",
           method: 'post',
           data: {
             page: this.currentPage,
-            offset: this.total
+            offset: this.pagesize
           },
         }).then(res => {
-          this.page.total = this.tableData.length;
+          this.tableData = res.data.data;
+          this.listLoading = false;
+          this.order = true;
         }).catch(() => {
+          this.listLoading = false
         })
       },
       // 递减的排序
       orderiddown(){
-        var that = this;
+        this.listLoading = true
         this.$axios({
           url:"http://localhost:8080/getByOrder?order=false",
           method: 'post',
           data: {
             page: this.currentPage,
-            offset: this.total
+            offset: this.pagesize
           },
         }).then(res => {
-          this.page.total = this.tableData.length;
+          this.tableData = res.data.data;
+          this.listLoading = false;
+          this.order = false;
         }).catch(() => {
+          this.listLoading = false
         })
       },
 
       // 重置
       reset(){
-        var that = this;
+        this.listLoading = true;
         this.$axios({
           url:"http://localhost:8080/getReset",
           method: 'post',
           data: {
             page: this.currentPage,
-            offset: this.total
+            offset: this.pagesize
           },
         }).then(res => {
-          this.page.total = this.tableData.length;
+          this.tableData = res.data.data;
+          this.listLoading = false
         }).catch(() => {
+          this.listLoading = false
         })
       },
       //饼状图
@@ -368,7 +390,7 @@
               data: [
                 {value: 0, name: '已通过'},
                 {value: 0, name: '未通过'},
-                {value: 1548, name: '未提交'}
+                {value: 0, name: '未提交'}
               ],
               itemStyle: {
                 emphasis: {
@@ -415,10 +437,10 @@
         this.$router.push(this.pathCompile(path))
       },
       resetknowledgePointsTopicsFilter() {
-        this.$refs.filterTable.clearFilter('knowledgePointsTopics');
+        this.reset();
       },
       resettopiclevelFilter() {
-        this.$refs.filterTable.clearFilter('topiclevel');
+        this.reset();
       },
       formatter(row, column) {
         return row.address;
@@ -439,7 +461,12 @@
       // 翻页处理
       handleCurrentChange(val) {
         this.currentPage = val;
-        this.fetchData();
+        if(this.order == true){
+          this.orderidup();
+        }else {
+          this.orderiddown()
+        }
+
       },
     }
   }
@@ -514,7 +541,7 @@
     margin-bottom: 20px;
   }
   :last-child {
-     margin-bottom: 0;
+    margin-bottom: 0;
   }
   .el-col {
     border-radius: 4px;
