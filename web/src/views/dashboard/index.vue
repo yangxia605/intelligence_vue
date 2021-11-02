@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
   <div class="dashboard-editor-container">
-    <div class="dashboard-text">name:欢迎您！</div>
+    <div class="dashboard-text">{{userInfo.username}} 欢迎您！</div>
 
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
@@ -36,6 +36,7 @@ import LineChart from './components/LineChart'
 import RaddarChart from './components/RaddarChart'
 import PieChart from './components/PieChart'
 import BarChart from './components/BarChart'
+import axios from "axios";
 
 const lineChartData = {
   newVisitis: {
@@ -67,13 +68,26 @@ export default {
   },
   data() {
     return {
-      lineChartData: lineChartData.newVisitis
+      lineChartData: lineChartData.newVisitis,
+      userInfo: {}
     }
   },
+  created() {
+    this.fetchData()
+  },
   methods: {
+    fetchData(){
+      this.userData();
+    },
     handleSetLineChartData(type) {
       this.lineChartData = lineChartData[type]
-    }
+    },
+    userData(){
+      axios.get("http://localhost:8080/userInfo").then(res => {
+        this.userInfo = res.data;
+      }).catch(() => {
+      })
+    },
   }
 }
 </script>
