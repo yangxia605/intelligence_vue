@@ -33,7 +33,7 @@
           name="password"
           tabindex="2"
           auto-complete="on"
-          @keyup.enter.native="handleLogin"
+          @keyup.enter.native="handleRegister"
         />
       </el-form-item>
 
@@ -50,11 +50,11 @@
           name="password"
           tabindex="2"
           auto-complete="on"
-          @keyup.enter.native="handleLogin"
+          @keyup.enter.native="handleRegister"
         />
       </el-form-item>
       <!-- <span>@{{passwordCheckValidate.errorText}}</span> -->
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;"  @click="handleLogin">注册</el-button>
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;"  @click.native.prevent="handleRegister">注册</el-button>
 
       <div class="tips">
         <span style="display: inline-block;float: left" @click="toLogin">返回登录界面</span>
@@ -127,59 +127,83 @@
                 'username': this.loginForm.username,
                 'password': this.loginForm.password
               }
-              this.$axios({
-              methods: 'get',
-              url:'/register',
-              headers: {'Content-type': 'application/x-www-form-urlencoded'},
-              params: postdata})
-              .then((response) => {
-                if(!response.success) {
-                  console.log(response.message)
-                  alter(response.message)
+              this.loading = true
+              this.$store.dispatch('user/register', this.loginForm).then((response) =>  {
+                if (response.success){
+                  this.loading = false
+                  this.$message.success("注册成功！")
+                  this.$router.push({ name: 'Login' })
+                }else{
+                  this.loading = false
+                  this.$message.error(response.message)
                 }
-                else {
-                  console.log(response.message)
-                  alter(response.message)
-                }
+
+              }).catch(() => {
+                this.loading = false
               })
+              // this.$axios({
+              // methods: 'get',
+              // url:'/register',
+              // headers: {'Content-type': 'application/x-www-form-urlencoded'},
+              // params: postdata})
+              // .then((response) => {
+              //   if(!response.success) {
+              //     console.log(response.message)
+              //     alter(response.message)
+              //   }
+              //   else {
+              //     console.log(response.message)
+              //     alter(response.message)
+              //   }
+              // })
+            }else {
+              console.log('error submit!!')
+              return false
             }
           })
-        if (this.loginForm.username === '' || this.loginForm.password === '' || this.loginForm.password2 === '') {
-          alter("请填写完整注册信息")
-          console.log("注册信息不完整")
-          // this.$Message.info("注册信息不完整");
-        }
-        else if(this.loginForm.password !== this.loginForm.password2) {
-          alter("两次密码不一致")
-          console.log("两次密码不一致")
-          // this.$Message.info("两次密码不一致");
-        }
-        else {
-          this.$refs.loginForm.validate(valid => {
-            if (valid) {
-              let postdata = {
-                'username': this.loginForm.username,
-                'password': this.loginForm.password
-              }
-              this.$axios({
-              methods: 'get',
-              url:'http://localhost:8080/register',
-              headers: {'Content-type': 'application/x-www-form-urlencoded'},
-              params: postdata})
-              .then((response) => {
-                if(!response.success) {
-                  console.log(response.message)
-                  alter(response.message)
-                }
-                else {
-                  console.log(response.message)
-                  alter(response.message)
-                }
-              })
-            }
-          })
-      }
-        },
+        // if (this.loginForm.username === '' || this.loginForm.password === '' || this.loginForm.password2 === '') {
+        //   alter("请填写完整注册信息")
+        //   console.log("注册信息不完整")
+        //   // this.$Message.info("注册信息不完整");
+        // }
+        // else if(this.loginForm.password !== this.loginForm.password2) {
+        //   alter("两次密码不一致")
+        //   console.log("两次密码不一致")
+        //   // this.$Message.info("两次密码不一致");
+        // }
+        // else {
+        //   // this.loading = true
+        //   // this.$store.dispatch('user/register', this.loginForm).then(() => {
+        //   //   this.$router.push({ name: 'Login' })
+        //   //   this.loading = false
+        //   // }).catch(() => {
+        //   //   this.loading = false
+        //   // })
+        //   // this.$refs.loginForm.validate(valid => {
+        //   //   if (valid) {
+        //   //     let postdata = {
+        //   //       'username': this.loginForm.username,
+        //   //       'password': this.loginForm.password
+        //   //     }
+        //   //     this.$axios({
+        //   //     methods: 'get',
+        //   //     url:'http://localhost:8080/register',
+        //   //     headers: {'Content-type': 'application/x-www-form-urlencoded'},
+        //   //     params: postdata})
+        //   //     .then((response) => {
+        //   //       if(!response.success) {
+        //   //         console.log(response.message)
+        //   //         alter(response.message)
+        //   //       }
+        //   //       else {
+        //   //         console.log(response.message)
+        //   //         alter(response.message)
+        //   //       }
+        //   //     })
+        //   //   }
+        //   // })
+        // }
+      },
       // 跳转到注册界面
       toLogin() {
         this.$router.push({ path: '/' })

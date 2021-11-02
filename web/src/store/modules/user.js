@@ -1,4 +1,4 @@
-import { login, logout } from '../../api/user'
+import { login, logout, register } from '../../api/user'
 import { getToken, setToken, removeToken } from '../../utils/auth'
 import { resetRouter } from '../../router'
 
@@ -38,6 +38,18 @@ const actions = {
         setToken(accessToken)
         localStorage.setItem('authorization',accessToken);
         resolve()
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  // user register
+  register({ commit }, userInfo) {
+    const { username, password } = userInfo
+    return new Promise((resolve, reject) => {
+      register({ username: username.trim(), password: password }).then(res => {
+        resolve(res)
       }).catch(error => {
         reject(error)
       })

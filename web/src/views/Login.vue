@@ -110,9 +110,11 @@
           if (valid) {
             this.loading = true
             this.$store.dispatch('user/login', this.loginForm).then(() => {
+              this.$message.success("登录成功！")
               this.$router.push({ name: 'Dashboard' })
               this.loading = false
-            }).catch(() => {
+            }).catch((error) => {
+              this.$message.error(error.message)
               this.loading = false
             })
           } else {
@@ -123,8 +125,8 @@
       },
       // 跳转到注册界面
       toRegister() {
-        // this.$router.push({ path: '/register' })
-        this.$router.push({ path: '/beginner' })
+        this.$router.push({ path: '/register' })
+        // this.$router.push({ path: '/beginner' })
       },
       // 跳转到忘记密码界面
       toForget() {
