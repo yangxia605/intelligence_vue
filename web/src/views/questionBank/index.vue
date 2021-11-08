@@ -108,21 +108,21 @@
             </div>
             <div class="module-body">
               <div class="coding-search" style="height:auto"></div>
-              <div class="coding-table-box">
+              <div class="coding-table-box" >
                 <template>
                   <!--
                   <el-button v-on:click="reset">清除知识点过滤器</el-button>
                   <el-button @click="resettopiclevelFilter">清除难度过滤器</el-button>
                   -->
-                  <input
+                  <el-input
                     type="text"
                     name="search-bar"
                     id
                     placeholder="题目"
                     style="color:#000; text-color:ffd04b"
-                    v-model="searchpname"
+                    v-model="searchPNameData.keyword"
                   />
-                  <el-button type="primary" icon="el-icon-search" v-on:click="searchid">搜索</el-button>
+                  <el-button type="primary" icon="el-icon-search" @click="searchbyPName">搜索</el-button>
                   <!--
                   <button v-on:click="reset">重置搜索</button>
                   -->
@@ -229,6 +229,13 @@
         total:null,
         userid:null,
         order:true,
+        searchPNameData: {
+          keyword:"",
+          pageRequest:{
+            page: this.currentPage,
+            offset:this.total
+          }
+        },
       }
     },
     watch: {
@@ -284,19 +291,18 @@
       },
       */
       // 搜索题目
-      searchid(){
+      searchbyPName(){
         this.listLoading = true
-        this.$axios({
-          url:"http://localhost:8080/getGlobalSearch?keywords=searchpanme",
-          method: 'post',
-          data: {
-            page: this.currentPage,
-            offset: this.total
-          },
-        }).then(res => {
+        this.searchPNameData.pageRequest =  {
+          page: 1,
+          offset: 10
+        }
+        this.$store.dispatch('topics/searchbyPName', this.searchPNameData).then(res => {
           this.tableData = res.data.data;
           this.listLoading = false
-        }).catch(() => {
+        }).catch((error) => {
+          alert("error")
+
           this.listLoading = false
         })
       },

@@ -37,3 +37,13 @@ export function getAnswerStatus(answerId) {
   })
 
 }
+
+export function searchbyPName(keyword,pageRequest ) {
+  return request({
+    url: '/searchbyPName',
+    method: 'post',
+    params: keyword,
+    data: pageRequest
+  })
+
+}

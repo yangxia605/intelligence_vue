@@ -1,6 +1,7 @@
-import { getTopicInfo, cancelFav, addFav, submitAnswer, getAnswerStatus } from '../../api/topics'
+import { getTopicInfo, cancelFav, addFav, submitAnswer, getAnswerStatus, searchbyPName } from '../../api/topics'
 import {getToken, removeToken, setToken} from "../../utils/auth";
 import {resetRouter} from "../../router";
+import {register} from "../../api/user";
 
 const getDefaultState = () => {
   return {
@@ -80,6 +81,17 @@ const actions = {
       }).catch(error => {
         reject(error)
       })
+    })
+  },
+
+  // searchbyPName
+  searchbyPName({ commit }, searchPNameData) {
+    const { keyword, pageRequest } = searchPNameData
+    const { page , offset} = pageRequest
+    searchbyPName({ keyword: keyword},  { page , offset}).then(res => {
+      resolve(res)
+    }).catch(error => {
+      reject(error)
     })
   },
   // get user info
