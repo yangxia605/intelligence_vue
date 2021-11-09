@@ -120,7 +120,7 @@
                     id
                     placeholder="题目"
                     style="color:#000; text-color:ffd04b"
-                    v-model="searchPNameData.keyword"
+                    v-model="searchPNameData.keywords"
                   />
                   <el-button type="primary" icon="el-icon-search" @click="searchbyPName">搜索</el-button>
                   <!--
@@ -230,7 +230,7 @@
         userid:null,
         order:true,
         searchPNameData: {
-          keyword:"",
+          keywords:"",
           pageRequest:{
             page: this.currentPage,
             offset:this.total
@@ -294,15 +294,14 @@
       searchbyPName(){
         this.listLoading = true
         this.searchPNameData.pageRequest =  {
-          page: 1,
-          offset: 10
+          page: 0,
+          offset: 0
         }
         this.$store.dispatch('topics/searchbyPName', this.searchPNameData).then(res => {
           this.tableData = res.data.data;
           this.listLoading = false
         }).catch((error) => {
           alert("error")
-
           this.listLoading = false
         })
       },

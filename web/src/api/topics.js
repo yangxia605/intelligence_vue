@@ -38,11 +38,11 @@ export function getAnswerStatus(answerId) {
 
 }
 
-export function searchbyPName(keyword,pageRequest ) {
+export function searchbyPName(keywords,pageRequest ) {
   return request({
-    url: '/searchbyPName',
+    url: '/getByPName',
     method: 'post',
-    params: keyword,
+    params: keywords,
     data: pageRequest
   })
 

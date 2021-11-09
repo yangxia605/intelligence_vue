@@ -86,9 +86,9 @@ const actions = {
 
   // searchbyPName
   searchbyPName({ commit }, searchPNameData) {
-    const { keyword, pageRequest } = searchPNameData
+    const { keywords, pageRequest } = searchPNameData
     const { page , offset} = pageRequest
-    searchbyPName({ keyword: keyword},  { page , offset}).then(res => {
+    searchbyPName({ keywords: keywords},  { page , offset}).then(res => {
       resolve(res)
     }).catch(error => {
       reject(error)
