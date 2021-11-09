@@ -88,10 +88,12 @@ const actions = {
   searchbyPName({ commit }, searchPNameData) {
     const { keywords, pageRequest } = searchPNameData
     const { page , offset} = pageRequest
-    searchbyPName({ keywords: keywords},  { page , offset}).then(res => {
-      resolve(res)
-    }).catch(error => {
-      reject(error)
+    return new Promise((resolve, reject) => {
+      searchbyPName({ keywords: keywords},  { page , offset} ).then(res => {
+        resolve(res)
+      }).catch(error => {
+        reject(error)
+      })
     })
   },
   // get user info

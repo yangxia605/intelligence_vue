@@ -266,7 +266,7 @@
             offset:this.pagesize
           },
         }).then(res => {
-          this.tableData = res.data.data;
+          this.tableData = res.data.list;
           this.userid = res.data.data.userId;
           this.listLoading = false
         }).catch(() => {
@@ -293,15 +293,15 @@
       // 搜索题目
       searchbyPName(){
         this.listLoading = true
-        this.searchPNameData.pageRequest =  {
-          page: 0,
-          offset: 0
-        }
-        this.$store.dispatch('topics/searchbyPName', this.searchPNameData).then(res => {
-          this.tableData = res.data.data;
+        // this.searchPNameData.pageRequest =  {
+        //   page: this.currentPage,
+        //   offset: this.pagesize
+        // }
+        this.$store.dispatch('topics/searchbyPName', this.searchPNameData).then((res) => {
+          this.tableData = res.list;
           this.listLoading = false
         }).catch((error) => {
-          alert("error")
+          alert(error)
           this.listLoading = false
         })
       },
@@ -328,7 +328,7 @@
             offset: this.pagesize
           },
         }).then(res => {
-          this.tableData = res.data.data;
+          this.tableData = res.data.list;
           this.listLoading = false;
           this.order = true;
         }).catch(() => {
@@ -346,7 +346,7 @@
             offset: this.pagesize
           },
         }).then(res => {
-          this.tableData = res.data.data;
+          this.tableData = res.data.list;
           this.listLoading = false;
           this.order = false;
         }).catch(() => {
@@ -365,7 +365,7 @@
             offset: this.pagesize
           },
         }).then(res => {
-          this.tableData = res.data.data;
+          this.tableData = res.data.list;
           this.listLoading = false
         }).catch(() => {
           this.listLoading = false
