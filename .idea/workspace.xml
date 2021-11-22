@@ -43,12 +43,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e918eab9-0a40-4ab1-bab2-cedeb355f8d9" name="Default Changelist" comment="新增">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/src/assets/js/datetimeFormat.js" afterDir="false" />
+    <list default="true" id="e918eab9-0a40-4ab1-bab2-cedeb355f8d9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/web/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/views/questionPage/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/views/questionPage/index.vue" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -82,8 +78,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/web/src/views/questionPage/index.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="220" column="73" selection-start-line="220" selection-start-column="73" selection-end-line="220" selection-end-column="73" />
+            <state relative-caret-position="192">
+              <caret line="89" column="69" selection-start-line="89" selection-start-column="69" selection-end-line="89" selection-end-column="69" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#el-button#0;n#div#1;n#el-col#0;n#el-row#1;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -114,11 +110,10 @@
                 <element signature="n#style#0;n#div#1;n#el-card#0;n#div#0;n#div#4;n#el-card#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#2;n#el-card#0;n#div#0;n#div#4;n#el-card#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#span#0;n#div#2;n#el-card#0;n#div#0;n#div#4;n#el-card#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="e#9873#9898#0" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#strong#1;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#strong#3;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#strong#0;n#!!top" expanded="true" />
-                <element signature="e#22250#23676#0" />
               </folding>
             </state>
           </provider>
@@ -148,7 +143,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -185,6 +179,14 @@
               <item name="intelligence_vue" type="462c0819:PsiDirectoryNode" />
               <item name="web" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="assets" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="intelligence_vue" type="b2602c69:ProjectViewProjectNode" />
+              <item name="intelligence_vue" type="462c0819:PsiDirectoryNode" />
+              <item name="web" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -213,6 +215,7 @@
         </subPane>
       </pane>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="ProjectViewState">
@@ -298,7 +301,8 @@
       <workItem from="1637502874301" duration="266000" />
       <workItem from="1637558590637" duration="1906000" />
       <workItem from="1637562499633" duration="1270000" />
-      <workItem from="1637567240478" duration="885000" />
+      <workItem from="1637567240478" duration="2856000" />
+      <workItem from="1637570165536" duration="297000" />
     </task>
     <task id="LOCAL-00001" summary="新增answerStatusMsg、executeDetailMsg">
       <created>1601348591623</created>
@@ -307,17 +311,30 @@
       <option name="project" value="LOCAL" />
       <updated>1601348591623</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="新增了讨论区界面和时间格式化文件datetimeFormat.js">
+      <created>1637568261427</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1637568261427</updated>
+    </task>
+    <task id="LOCAL-00003" summary="更改了回复变量名称和对应结构">
+      <created>1637570082616</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1637570082616</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12956000" />
+    <option name="totallyTimeSpent" value="15224000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="848" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.27345845" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2774799" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -326,7 +343,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32960895" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32960895" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -394,7 +411,9 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="新增answerStatusMsg、executeDetailMsg" />
-    <option name="LAST_COMMIT_MESSAGE" value="新增answerStatusMsg、executeDetailMsg" />
+    <MESSAGE value="新增了讨论区界面和时间格式化文件datetimeFormat.js" />
+    <MESSAGE value="更改了回复变量名称和对应结构" />
+    <option name="LAST_COMMIT_MESSAGE" value="更改了回复变量名称和对应结构" />
   </component>
   <component name="WindowStateProjectService">
     <state width="1515" height="471" key="GridCell.Tab.0.bottom" timestamp="1635824040359">
@@ -456,8 +475,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/web/src/views/questionPage/index.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="220" column="73" selection-start-line="220" selection-start-column="73" selection-end-line="220" selection-end-column="73" />
+        <state relative-caret-position="192">
+          <caret line="89" column="69" selection-start-line="89" selection-start-column="69" selection-end-line="89" selection-end-column="69" />
           <folding>
             <element signature="n#style#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#el-button#0;n#div#1;n#el-col#0;n#el-row#1;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -488,11 +507,10 @@
             <element signature="n#style#0;n#div#1;n#el-card#0;n#div#0;n#div#4;n#el-card#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#2;n#el-card#0;n#div#0;n#div#4;n#el-card#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#0;n#div#2;n#el-card#0;n#div#0;n#div#4;n#el-card#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#9873#9898#0" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#strong#1;n#!!top" expanded="true" />
             <element signature="n#style#0;n#strong#3;n#!!top" expanded="true" />
             <element signature="n#style#0;n#strong#0;n#!!top" expanded="true" />
-            <element signature="e#22250#23676#0" />
           </folding>
         </state>
       </provider>
