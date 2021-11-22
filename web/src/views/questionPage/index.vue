@@ -124,7 +124,7 @@
           <!--查询到多条讨论记录-->
           <div v-else style="font-size: 16px;font-weight: normal;padding-bottom: 20px">
             <!--显示主楼-->
-            <div v-for="(item,id) in discussionData.result" :key="id" class="main-discussion" style="padding: 0px;">
+            <div v-for="(item,id) in discussionData.data" :key="id" class="main-discussion" style="padding: 0px;">
               <el-card class="box-card" shadow="never" style="min-height: 100px;min-width: 600px">
                 <div style="padding: 14px;">
                   <!--用户头像设置-->
@@ -181,7 +181,7 @@
                 </div>
                 <div style="clear: both"></div>
                 <!--如果有回复，显示子楼-->
-                <div v-show="item.reply!==''" style="padding-left: 50px">
+                <div v-show="item.reply!==null" style="padding-left: 50px">
                   <div v-for="(i,id) in item.reply" :key="id" class="sub-reply" style="padding: 0px;">
                     <el-card class="box-card" shadow="never" style="background-color: #f6f6f6;width: 100%;margin-bottom: 6px;">
                       <div style="padding: 2px;">
@@ -309,13 +309,13 @@
           emptyData: {
             'message': 'no data',
             'code': 0,
-            'result': null,
+            'data': null,
             'total': 0
           },
           validData: {
             'message': 'success',
             'code': 200,
-            'result': [
+            'data': [
               {
                 'id': 1,
                 'topic_id': 1,
@@ -573,7 +573,7 @@
         /* 通过题目Id获取讨论区数据 */
         getDiscussionByTopicId () {
           // this.discussionData = this.emptyData /* 假数据 */
-          // this.discussionData = this.validData /* 假数据 */
+          this.discussionData = this.validData /* 假数据 */
           /* 传递参数：topic_id */
           if (this.discussionData.code != null) { /* 成功从服务器获得数据 */
             // this.msg = this.discussionData.message
