@@ -117,6 +117,26 @@ const actions = {
   //   })
   // },
 
+  getDiscussionByTopicId({ commit }, { topicID }) {
+    return new Promise((resolve, reject) => {
+      getDiscussionByTopicId(topicID ).then(res => {
+        resolve(res)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  giveOneLike({ commit }, { discussionID }) {
+    return new Promise((resolve, reject) => {
+      giveOneLike(discussionID ).then(res => {
+        resolve(res)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
 
 }
 

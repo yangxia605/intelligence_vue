@@ -307,12 +307,14 @@
             }
           ],
           emptyData: {
+            'success': true,
             'message': 'no data',
             'code': 0,
             'data': null,
             'total': 0
           },
           validData: {
+            'success': true,
             'message': 'success',
             'code': 200,
             'data': [
@@ -369,7 +371,7 @@
       },
       created() {
           this.fenchData()
-          this.getDiscussionByTopicId() /* 后续可以和页面的fenchData()合并 */
+          this.getDiscussionData() /* 后续可以和页面的fenchData()合并 */
       },
       destroyed(){
         clearInterval(this.myInterval)
@@ -571,24 +573,29 @@
         },
 
         /* 通过题目Id获取讨论区数据 */
-        getDiscussionByTopicId () {
+        getDiscussionData () {
           // this.discussionData = this.emptyData /* 假数据 */
           this.discussionData = this.validData /* 假数据 */
-          /* 传递参数：topic_id */
-          if (this.discussionData.code != null) { /* 成功从服务器获得数据 */
-            // this.msg = this.discussionData.message
-            if (this.discussionData.code === 200) {
-              this.discussionStatus = true
-              this.msg = '讨论区有数据'
-            } else {
-              this.discussionStatus = false
-              this.msg = '讨论区无数据'
+          /* 传递参数：topicId */
+          let topicID = this.topicData.id
+          this.$store.dispatch('topics/getDiscussionByTopicId', {topicID: topicID}).then(data => {
+            console.log(data)
+            this.discussionData = data
+            if (this.discussionData.success) { /* 成功从服务器获得数据 */
+              // this.msg = this.discussionData.message
+              if (this.discussionData.code === 200) {
+                this.discussionStatus = true
+                this.msg = '讨论区有数据'
+              } else {
+                this.discussionStatus = false
+                this.msg = '讨论区无数据'
+              }
+            } else { /* 服务器无响应 */
+              this.msg = '500'
+              console.log(this.msg)
             }
-          } else { /* 服务器无响应 */
-            this.msg = '500'
-            console.log(this.msg)
-          }
-          return this.discussionData
+          }).catch(error => {
+          })
         },
         /* 平滑定位到讨论讨论区 */
         jumpDiscussionArea (index) {
@@ -633,7 +640,7 @@
             }
           }
         },
-        /* 平滑定位到讨论编辑框 */
+        /* 平滑定位到讨论编辑框 后续改为面包屑组件 */
         jumpDiscussionEditor (index) {
           let jump = document.querySelectorAll('.discussion_edit')
           let total = jump[index].offsetTop - 80
@@ -679,19 +686,24 @@
         /* 点赞功能（待完善） */
         thumbUp (item) {
           item.like_num += 1
-          console.log(item.id + ' thumb up')
+          let discussionId　= item.id
+          console.log(discussionId + ' thumb up')
           /* 传递参数：item.id */
+          this.$store.dispatch('topics/giveOneLike', {discussionId: discussionId}).then(data => {
+            console.log(data)
+          }).catch(error => {
+          })
         },
         /* 添加新讨论(待完善) */
         addNewDiscussion () {
           console.log('new discussion')
-          /* 传递参数：user_id, topic_id, parent_id=item.id, submit_time, content=this.discussion_text, like_num=0 */
+          /* 传递参数：topicId=this.topicData.topicId, parent_id=-1, submitTime, content=this.discussion_text*/
+          let topicId=this.topicData.topicId
           let parentId = -1
-          let like = 0
           let content = this.discussion_text
-          var now = new Date()
-          var submitTime = format(now, 'YYYY-MM-DD HH:mm:ss')
-          console.log(parentId, content, like, submitTime)
+          let now = new Date()
+          let submitTime = format(now, 'YYYY-MM-DD HH:mm:ss')
+          console.log(topicId, parentId, content, submitTime)
           this.discussion_text = ''
           /* 强制刷新跳转 */
           // this.$router.go(0)
@@ -699,13 +711,13 @@
         /* 添加新讨论(待完善) */
         addNewReply (discussionId) {
           console.log('new reply')
-          /* 传递参数：user_id, topic_id, parent_id=item.id, submit_time, content=this.discussion_text, like_num=0 */
+          /* 传递参数：topic_id, parent_id=discussionId, submitTime, content=this.discussion_text*/
+          let topicId=this.topicData.topicId
           let parentId = discussionId
-          let like = 0
           let content = this.reply_text
-          var now = new Date()
-          var submitTime = format(now, 'YYYY-MM-DD HH:mm:ss')
-          console.log(parentId, content, like, submitTime)
+          let now = new Date()
+          let submitTime = format(now, 'YYYY-MM-DD HH:mm:ss')
+          console.log(topicId, parentId, content, submitTime)
           this.reply_text = ''
           /* 强制刷新跳转 */
           // this.$router.go(0)

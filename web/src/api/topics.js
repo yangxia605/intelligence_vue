@@ -47,3 +47,18 @@ export function searchbyPName(keywords,pageRequest ) {
   })
 
 }
+
+export function getDiscussionByTopicId(topicID) {
+  return request({
+    url: '/getDiscussionByTopicId/' + topicID,
+    method: 'get'
+  })
+}
+
+export function giveOneLike(data) {
+  return request({
+    url: '/giveOneLike',
+    method: 'post',
+    data: data
+  })
+}
