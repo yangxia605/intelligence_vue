@@ -176,7 +176,9 @@
                       发表
                     </el-button>
                   </span>
-                    <el-button type="text" class="button" style="color: gray" slot="reference">回复({{item.reply.length}})</el-button>
+                    <el-button type="text" class="button" style="color: gray" slot="reference">
+                      回复
+                    </el-button>
                   </el-popover>
                 </div>
                 <div style="clear: both"></div>
@@ -295,17 +297,7 @@
           discussion_text: '',
           reply_text: '',
           discussionStatus: false,
-          discussionData: [
-            {
-              id: 0,
-              topic_id: 1,
-              user_id: 1,
-              parent_id: -1,
-              submit_time: '2021-11-11 07:07:07',
-              content: 'test',
-              like_num: 5
-            }
-          ],
+          discussionData: [],
           testDataEmpty: {
             "success": false,
             "message": "false",
@@ -651,11 +643,12 @@
         getDiscussionData () {
           // this.discussionData = this.emptyData /* 假数据 */
           // this.discussionData = this.validData /* 假数据 */
-          let resData = this.testDataEmpty /* 测试数据为空 */
-          // this.resData = this.testDataSuccess /* 测试数据不为空 */
+          // let resData = this.testDataEmpty /* 测试数据为空 */
+          let resData = this.testDataSuccess /* 测试数据不为空 */
           console.log(resData.message)
           if(resData.success){
             this.discussionData = resData.data
+            console.log(this.discussionData)
             this.discussionStatus = true
           } else {
             this.discussionStatus = false
@@ -786,7 +779,6 @@
         },
         /* 添加新讨论(待完善) */
         addNewDiscussion () {
-          console.log('add new discussion')
           /* 传递参数：topicId=this.topicData.topicId, parent_id=-1, submitTime, content=this.discussion_text*/
           let topicId = this.topicData.topicId
           let parentId = -1
@@ -809,7 +801,6 @@
         },
         /* 添加新讨论(待完善) */
         addNewReply (discussionId) {
-          console.log('add new reply')
           /* 传递参数：topic_id, parent_id=discussionId, submitTime, content=this.discussion_text*/
           let topicId=this.topicData.topicId
           let parentId = discussionId

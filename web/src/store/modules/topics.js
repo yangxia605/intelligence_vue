@@ -129,7 +129,7 @@ const actions = {
 
   giveOneLike({ commit }, { discussionID }) {
     return new Promise((resolve, reject) => {
-      giveOneLike(discussionID ).then(res => {
+      giveOneLike(discussionID).then(res => {
         resolve(res)
       }).catch(error => {
         reject(error)
@@ -138,10 +138,9 @@ const actions = {
   },
 
   addNewDiscussion({ commit }, discussionData) {
-    const { keywords, pageRequest } = discussionData
-    const { page , offset} = pageRequest
+    const {topicId, parentId, content, submitTime} = discussionData
     return new Promise((resolve, reject) => {
-      addNewDiscussion({ keywords: keywords},  { page , offset} ).then(res => {
+      addNewDiscussion({ topicId:topicId, parentId:parentId, content:content, submitTime:submitTime }).then(res => {
         resolve(res)
       }).catch(error => {
         reject(error)
