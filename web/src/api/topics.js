@@ -62,3 +62,11 @@ export function giveOneLike(data) {
     data: data
   })
 }
+
+export function addNewDiscussion(data) {
+  return request({
+    url: '/addNewDiscussion',
+    method: 'post',
+    data: data
+  })
+}

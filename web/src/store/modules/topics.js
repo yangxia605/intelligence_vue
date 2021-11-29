@@ -137,6 +137,18 @@ const actions = {
     })
   },
 
+  addNewDiscussion({ commit }, discussionData) {
+    const { keywords, pageRequest } = discussionData
+    const { page , offset} = pageRequest
+    return new Promise((resolve, reject) => {
+      addNewDiscussion({ keywords: keywords},  { page , offset} ).then(res => {
+        resolve(res)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
 
 }
 

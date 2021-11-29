@@ -97,7 +97,7 @@
           </span>
             <!--显示查询到的讨论条数-->
             <span v-show=this.discussionStatus style="font-size: 16px;padding-left: 20px;color: gray;font-weight: normal">
-            共有 {{this.discussionData.total}} 条讨论
+            共有 {{this.discussionData.length}} 条讨论
           </span>
             <!--锚点定位到下方编辑框-->
             <el-tooltip class="item" effect="dark" content="添加新讨论" placement="bottom-start">
@@ -124,31 +124,31 @@
           <!--查询到多条讨论记录-->
           <div v-else style="font-size: 16px;font-weight: normal;padding-bottom: 20px">
             <!--显示主楼-->
-            <div v-for="(item,id) in discussionData.data" :key="id" class="main-discussion" style="padding: 0px;">
+            <div v-for="item in this.discussionData" class="main-discussion" style="padding: 0px;">
               <el-card class="box-card" shadow="never" style="min-height: 100px;min-width: 600px">
                 <div style="padding: 14px;">
                   <!--用户头像设置-->
                   <!--<el-avatar :size="50" :src="circleUrl"></el-avatar>-->
                   <i class="el-icon-user-solid" style="font-size: 20px"></i>
                   <!--用户名-->
-                  <span style="font-size: 20px;font-weight: bold;padding-left: 10px">{{item.user_name}}</span>
+                  <span style="font-size: 20px;font-weight: bold;padding-left: 10px">{{item.discussionResponse.userId}}</span>
                 </div>
                 <!--内容-->
                 <div class="bottom clearfix" style="font-size: 16px;padding-left: 40px;margin: 10px">
-                  {{item.content}}
+                  {{item.discussionResponse.content}}
                 </div>
                 <div style="float: right">
                   <!--提交时间-->
-                  <span class="time" style="font-size: 12px;padding-right: 8px;color: gray">{{ item.submit_time }}</span>
+                  <span class="time" style="font-size: 12px;padding-right: 8px;color: gray">{{ item.discussionResponse.submitTime }}</span>
                   <!--点赞数，包括点赞事件-->
                   <el-button
                     type="text"
                     class="button"
                     style="padding-right: 8px;"
-                    v-on:click="thumbUp(item)"
+                    v-on:click="thumbUp(item,-1)"
                   >
                     <i class="el-icon-thumb"></i>
-                    ({{item.like_num}})
+                    ({{item.discussionResponse.likeNum}})
                   </el-button>
                   <!--回复条数，包括添加回复-->
                   <el-popover
@@ -169,34 +169,34 @@
                     <el-button
                       type="success"
                       :disabled="reply_text===''"
-                      @click="addNewReply(item.id)"
+                      @click="addNewReply(item.discussionResponse.id)"
                       size="small"
                       round
                     >
                       发表
                     </el-button>
                   </span>
-                    <el-button type="text" class="button" style="color: gray" slot="reference">回复({{item.totalreply}})</el-button>
+                    <el-button type="text" class="button" style="color: gray" slot="reference">回复({{item.reply.length}})</el-button>
                   </el-popover>
                 </div>
                 <div style="clear: both"></div>
                 <!--如果有回复，显示子楼-->
                 <div v-show="item.reply!==null" style="padding-left: 50px">
-                  <div v-for="(i,id) in item.reply" :key="id" class="sub-reply" style="padding: 0px;">
+                  <div v-for="i in item.reply" class="sub-reply" style="padding: 0px;">
                     <el-card class="box-card" shadow="never" style="background-color: #f6f6f6;width: 100%;margin-bottom: 6px;">
                       <div style="padding: 2px;">
                         <!--<el-avatar :size="50" :src="circleUrl"></el-avatar>-->
                         <i class="el-icon-user" style="font-size: 20px"></i>
-                        <span style="font-size: 20px;font-weight: bold;padding-left: 10px">{{i.user_name}}</span>
+                        <span style="font-size: 20px;font-weight: bold;padding-left: 10px">{{i.userId}}</span>
                       </div>
                       <div class="bottom clearfix" style="font-size: 16px;padding-left: 30px;margin: 10px">
                         {{i.content}}
                       </div>
                       <div style="float: right">
-                        <span class="time" style="font-size: 12px;padding-right: 8px;color: gray">{{ i.submit_time }}</span>
-                        <el-button type="text" class="button" v-on:click="thumbUp(i)">
+                        <span class="time" style="font-size: 12px;padding-right: 8px;color: gray">{{ i.submitTime }}</span>
+                        <el-button type="text" class="button" v-on:click="thumbUp(i,1)">
                           <i class="el-icon-thumb"></i>
-                          ({{i.like_num}})
+                          ({{i.likeNum}})
                         </el-button>
                       </div>
                     </el-card>
@@ -306,6 +306,81 @@
               like_num: 5
             }
           ],
+          testDataEmpty: {
+            "success": false,
+            "message": "false",
+            "code": 500,
+            "data": null
+          },
+          testDataSuccess: {
+            "success": true,
+            "message": "success",
+            "code": 200,
+            "data": [
+              {
+                "discussionResponse": {
+                  "id": 2,
+                  "content": "1",
+                  "topicId": 1,
+                  "submitTime": 1637563160000,
+                  "userId": 1,
+                  "parentId": -1,
+                  "likeNum": 2
+                },
+                "reply": [
+                  {
+                    "id": 4,
+                    "content": "111",
+                    "topicId": 1,
+                    "submitTime": 1637639452954,
+                    "userId": 1,
+                    "parentId": 2,
+                    "likeNum": 0
+                  },
+                  {
+                    "id": 3,
+                    "content": "1",
+                    "topicId": 1,
+                    "submitTime": 1637639134627,
+                    "userId": 1,
+                    "parentId": 2,
+                    "likeNum": 2
+                  },
+                  {
+                    "id": 7,
+                    "content": "1111",
+                    "topicId": 1,
+                    "submitTime": 1637759332168,
+                    "userId": 1,
+                    "parentId": 2,
+                    "likeNum": 0
+                  },
+                  {
+                    "id": 8,
+                    "content": "1111",
+                    "topicId": 1,
+                    "submitTime": 1637849313000,
+                    "userId": 5,
+                    "parentId": 2,
+                    "likeNum": 0
+                  }
+                ]
+              },
+              {
+                "discussionResponse": {
+                  "id": 6,
+                  "content": "10101",
+                  "topicId": 1,
+                  "submitTime": 1637757986716,
+                  "userId": 1,
+                  "parentId": -1,
+                  "likeNum": 0
+                },
+                "reply": null
+              }
+            ]
+          },
+
           emptyData: {
             'success': true,
             'message': 'no data',
@@ -575,27 +650,36 @@
         /* 通过题目Id获取讨论区数据 */
         getDiscussionData () {
           // this.discussionData = this.emptyData /* 假数据 */
-          this.discussionData = this.validData /* 假数据 */
+          // this.discussionData = this.validData /* 假数据 */
+          let resData = this.testDataEmpty /* 测试数据为空 */
+          // this.resData = this.testDataSuccess /* 测试数据不为空 */
+          console.log(resData.message)
+          if(resData.success){
+            this.discussionData = resData.data
+            this.discussionStatus = true
+          } else {
+            this.discussionStatus = false
+          }
           /* 传递参数：topicId */
-          let topicID = this.topicData.id
-          this.$store.dispatch('topics/getDiscussionByTopicId', {topicID: topicID}).then(data => {
-            console.log(data)
-            this.discussionData = data
-            if (this.discussionData.success) { /* 成功从服务器获得数据 */
-              // this.msg = this.discussionData.message
-              if (this.discussionData.code === 200) {
-                this.discussionStatus = true
-                this.msg = '讨论区有数据'
-              } else {
-                this.discussionStatus = false
-                this.msg = '讨论区无数据'
-              }
-            } else { /* 服务器无响应 */
-              this.msg = '500'
-              console.log(this.msg)
-            }
-          }).catch(error => {
-          })
+          // let topicID = this.topicData.id
+          // this.$store.dispatch('topics/getDiscussionByTopicId', {topicID: topicID}).then(data => {
+          //   console.log(data)
+          //   this.discussionData = data
+          //   if (this.discussionData.success) { /* 成功从服务器获得数据 */
+          //     // this.msg = this.discussionData.message
+          //     if (this.discussionData.code === 200) {
+          //       this.discussionStatus = true
+          //       this.msg = '讨论区有数据'
+          //     } else {
+          //       this.discussionStatus = false
+          //       this.msg = '讨论区无数据'
+          //     }
+          //   } else { /* 服务器无响应 */
+          //     this.msg = '500'
+          //     console.log(this.msg)
+          //   }
+          // }).catch(error => {
+          // })
         },
         /* 平滑定位到讨论讨论区 */
         jumpDiscussionArea (index) {
@@ -684,9 +768,15 @@
           }
         },
         /* 点赞功能（待完善） */
-        thumbUp (item) {
-          item.like_num += 1
-          let discussionId　= item.id
+        thumbUp (item, pos) {
+          let discussionId = 0
+          if(pos === -1){
+            item.discussionResponse.likeNum += 1
+            discussionId　= item.discussionResponse.id
+          } else{
+            item.likeNum += 1
+            discussionId　= item.id
+          }
           console.log(discussionId + ' thumb up')
           /* 传递参数：item.id */
           this.$store.dispatch('topics/giveOneLike', {discussionId: discussionId}).then(data => {
@@ -696,21 +786,30 @@
         },
         /* 添加新讨论(待完善) */
         addNewDiscussion () {
-          console.log('new discussion')
+          console.log('add new discussion')
           /* 传递参数：topicId=this.topicData.topicId, parent_id=-1, submitTime, content=this.discussion_text*/
-          let topicId=this.topicData.topicId
+          let topicId = this.topicData.topicId
           let parentId = -1
           let content = this.discussion_text
           let now = new Date()
           let submitTime = format(now, 'YYYY-MM-DD HH:mm:ss')
           console.log(topicId, parentId, content, submitTime)
           this.discussion_text = ''
+          this.$store.dispatch('topics/addNewDiscussion', {
+          topicID: topicId,
+          parentId: parentId,
+          content: content,
+          submitTime: submitTime
+          }).then(data => {
+            console.log(data)
+          }).catch(error => {
+          })
           /* 强制刷新跳转 */
           // this.$router.go(0)
         },
         /* 添加新讨论(待完善) */
         addNewReply (discussionId) {
-          console.log('new reply')
+          console.log('add new reply')
           /* 传递参数：topic_id, parent_id=discussionId, submitTime, content=this.discussion_text*/
           let topicId=this.topicData.topicId
           let parentId = discussionId
@@ -719,6 +818,15 @@
           let submitTime = format(now, 'YYYY-MM-DD HH:mm:ss')
           console.log(topicId, parentId, content, submitTime)
           this.reply_text = ''
+          this.$store.dispatch('topics/addNewDiscussion', {
+            topicID: topicId,
+            parentId: parentId,
+            content: content,
+            submitTime: submitTime
+          }).then(data => {
+            console.log(data)
+          }).catch(error => {
+          })
           /* 强制刷新跳转 */
           // this.$router.go(0)
         }
