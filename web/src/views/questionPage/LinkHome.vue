@@ -1,11 +1,10 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-editor-container">
       <el-col :span="7" >
         <div class="grid-content topic_window" >
           <div class="question-intr mt2 mb2">
             <div class="subject-item-wrap" align="left">
-              <div>Python示例：<el-tag>Memoized Fibonacci</el-tag></div>
+              <div style="margin-top: 40px;color: white">Python示例：<el-tag>Memoized Fibonacci</el-tag></div>
               <div id='exa' style="white-space: pre-wrap;background-color: white;color: #2d3a4b;margin-top: 40px;margin-right: 20px;font-family: Georgia;font-size: small" >{{topicData.content}}</div>
               <el-button type="primary" icon="el-icon-document-copy" style="padding: 10px; margin-top: 20px; margin-left: 150px"   @click="copyExample">复制</el-button>
             </div>
@@ -25,7 +24,6 @@
         </div>
       </el-col>
 
-    </div>
   </div>
 </template>
 
