@@ -6,12 +6,10 @@
         <el-breadcrumb-item style="font-size: 20px;line-height:0.5;">{{topicData.topicName}}</el-breadcrumb-item>
       </el-breadcrumb>
       <el-divider></el-divider>
-      <div id="iframe-container"  >
-        <iframe :src="$store.state.iframeSrc"  v-show=showVis scrolling="auto" frameborder="0" id="iframe" style="width:1600px;height:450px;"></iframe>
-      </div>
+
       <el-row :gutter="20">
         <el-col :span="12">
-          <div class="grid-content topic_window" v-if="showCode">
+          <div class="grid-content topic_window" >
             <div class="question-intr mt2 mb2">
               <div class="subject-item-wrap" align="left">
                 <div>时间限制：{{topicData.timeLimit}} s</div>
@@ -46,7 +44,7 @@
                       :cmTheme="cmTheme"
                       :cmMode="cmMode"
                       :value="curCode"
-                      v-if=showCode>
+                      >
               </my_cm>
 
             </div>
@@ -54,7 +52,6 @@
 
           </div>
         </el-col>
-
 
       </el-row>
       <el-row :gutter="20">
@@ -76,7 +73,7 @@
         <el-col :span="12" class="code_tool_bar" align="left">
           <el-button type="primary" style="padding: 10px;"   @click="createSubBox">保存并提交代码</el-button>
           <el-button type="success" v-if='subStatus' style="padding: 10px; " @click="getAnswerStatus">查看提交结果</el-button>
-          <el-button id="switch" type="success"   style="padding: 10px;margin-left: 100px"@click="gotoPage()">单步执行可视化</el-button>
+<!--          <el-button id="switch" type="success"   style="padding: 10px;margin-left: 100px"@click="gotoPage()">单步执行可视化</el-button>-->
         </el-col>
       </el-row>
     </div>
@@ -136,8 +133,8 @@
             "sql",
           ],
           cmMode: "python", //codeMirror模式
-          showVis: false,
-          showCode:true
+          // showVis: false,
+          // showCode:true
         };
       },
       created() {
@@ -147,21 +144,6 @@
         clearInterval(this.myInterval)
       },
       methods: {
-        gotoPage(path) {
-          if (document.getElementById("switch").innerText === "单步执行可视化"){
-            this.showVis=true;
-            this.showCode=false;
-            this.$store.state.iframeSrc = this.$route.meta.link
-            document.getElementById("switch").innerText = "返回"
-          }
-          else {
-            this.showVis=false;
-            this.showCode=true;
-            document.getElementById("switch").innerText = "单步执行可视化可视化"
-
-          }
-
-        },
         // 切换语言
         onEditorModeChange(value) {
           switch (value) {
