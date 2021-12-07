@@ -54,6 +54,9 @@ export const constantRoutes = [
       path: ':topicId', //题目ID
       hidden: true, //不在侧边栏线上
       component: () => import('../views/questionPage/index'),
+      meta: {
+        link:  'https://executionvisualization.herokuapp.com/visualize.html#mode=edit',
+      }
     }]
   },
   {
