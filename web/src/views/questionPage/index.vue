@@ -78,6 +78,11 @@
             <a v-if="topicData.favorite" @click="cancelFav"><i class="el-icon-star-on"></i>取消收藏</a>
             <a v-else  @click="addFav"><i class="el-icon-star-off"></i>添加收藏</a>
           </div>
+          <div class="tool_item">
+            <router-link target="_blank" :to="{path:'/codereader'}">
+              <i class="el-icon-s-opportunity"></i>代码阅读
+            </router-link>
+          </div>
         </el-col>
         <el-col :span="12" class="code_tool_bar" align="left">
           <el-button type="primary" style="padding: 10px;"   @click="createSubBox">保存并提交代码</el-button>
@@ -130,9 +135,15 @@
 
 
 
-          curCode: '# code here!',
+          curCode:  // 默认代码模板
+            'public class Main{\n' +
+            '\tpublic static int main(){\n' +
+            '\t\t// code here\n' +
+            '\t\treturn answer;\n' +
+            '\t}\n' +
+            '}',
           cmTheme: "blackboard", // codeMirror主题
-          cmEditorMode: "Python(3.6)", // 编辑模式
+          cmEditorMode: "Javac(1.8)", // 编辑模式
           // 编辑模式选项
           cmEditorModeOptions: [
             "Python(3.6)",
@@ -140,7 +151,7 @@
             "C++11(clang++3.9)",
             "sql",
           ],
-          cmMode: "python", //codeMirror模式
+          cmMode: "text/x-java", //codeMirror模式
         };
       },
       created() {

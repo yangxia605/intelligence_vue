@@ -1,4 +1,5 @@
-import { getTopicInfo, cancelFav, addFav, submitAnswer, getAnswerStatus, searchbyPName } from '../../api/topics'
+import { getTopicInfo, cancelFav, addFav, submitAnswer, getAnswerStatus, searchbyPName
+  ,submitCodeGraph } from '../../api/topics'
 import {getToken, removeToken, setToken} from "../../utils/auth";
 import {resetRouter} from "../../router";
 import {register} from "../../api/user";
@@ -116,6 +117,16 @@ const actions = {
   //     })
   //   })
   // },
+
+  submitCodeGraph({ commit }, subInfo) {
+    return new Promise((resolve, reject) => {
+      submitCodeGraph(subInfo).then(res => {
+        resolve(res)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
 
 
 }

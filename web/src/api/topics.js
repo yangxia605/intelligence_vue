@@ -47,3 +47,12 @@ export function searchbyPName(keywords,pageRequest ) {
   })
 
 }
+
+export function submitCodeGraph(keywords,pageRequest ) {
+  return request({
+    url: '/',
+    method: 'post',
+    data: data
+  })
+
+}

@@ -76,6 +76,16 @@ export const constantRoutes = [
       meta: { title: '讨论区', icon: 'el-icon-s-comment' }
     }]
   },
+  {
+    path: '/codereader',
+    component: Layout,
+    children: [{
+      path: '',
+      name: 'aboutme',
+      component: () => import('../views/codereader'),
+      meta: { title: '代码阅读', icon: 'el-icon-s-opportunity' }
+    }]
+  }
 ]
 
 
