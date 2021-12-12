@@ -14,6 +14,8 @@ import '@/styles/index.scss' // global css
 import components from '@/components/index.js';
 import { codemirror } from 'vue-codemirror'
 import 'codemirror/lib/codemirror.css'
+import VueClipboard from 'vue-clipboard2'
+Vue.use(VueClipboard)
 
 Vue.config.productionTip = false
 Vue.use(ElementUI);
@@ -41,3 +43,4 @@ axios.interceptors.request.use(function (config) {
   }
   return config;
 })
+

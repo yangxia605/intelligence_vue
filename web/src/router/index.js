@@ -54,6 +54,7 @@ export const constantRoutes = [
       path: ':topicId', //题目ID
       hidden: true, //不在侧边栏线上
       component: () => import('../views/questionPage/index'),
+
     }]
   },
   {
@@ -85,7 +86,22 @@ export const constantRoutes = [
       component: () => import('../views/codereader'),
       meta: { title: '代码阅读', icon: 'el-icon-s-opportunity' }
     }]
+  },
+  {
+    path: '/externalLink',
+    component: Layout,
+    children: [{
+      path: '',
+      name: 'externalLink',
+      component: () => import('../views/questionPage/LinkHome'),
+      meta: {
+        link: 'https://executionvisualization.herokuapp.com/visualize.html#mode=edit',
+        title: '单步执行可视化',
+        icon: 'el-icon-video-play'
+      }
+    }]
   }
+
 ]
 
 

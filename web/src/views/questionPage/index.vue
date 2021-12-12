@@ -6,6 +6,7 @@
         <el-breadcrumb-item style="font-size: 20px;line-height:0.5;">{{topicData.topicName}}</el-breadcrumb-item>
       </el-breadcrumb>
       <el-divider></el-divider>
+
       <el-row :gutter="20">
         <el-col :span="12">
           <div class="grid-content topic_window" >
@@ -35,33 +36,23 @@
             </div>
           </div>
         </el-col>
-        <el-col :span="12" align="left">
-          <div class="grid-content topic_window">
-            <div class="code-mirror-div">
-              <div class="tool-bar" style="">
-                <span style="color: whitesmoke;font-size:14px">编程语言</span>
-                <el-select
-                  v-model="cmEditorMode"
-                  size="mini"
-                  style="width:100px"
-                  @change="onEditorModeChange">
-                  <el-option
-                    v-for="item in cmEditorModeOptions"
-                    :key="item"
-                    :label="item"
-                    :value="item"
-                  ></el-option>
-                </el-select>
-              </div>
+        <el-col :span="12" align="left" >
+          <div class="grid-content topic_window"  >
+            <div class="code-mirror-div" >
               <my_cm  class="code-edit"
                       ref="cmEditor"
                       :cmTheme="cmTheme"
                       :cmMode="cmMode"
-                      :value="curCode">
+                      :value="curCode"
+                      >
               </my_cm>
+
             </div>
+
+
           </div>
         </el-col>
+
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12" class="topic_tool_bar">
@@ -87,6 +78,7 @@
         <el-col :span="12" class="code_tool_bar" align="left">
           <el-button type="primary" style="padding: 10px;"   @click="createSubBox">保存并提交代码</el-button>
           <el-button type="success" v-if='subStatus' style="padding: 10px; " @click="getAnswerStatus">查看提交结果</el-button>
+<!--          <el-button id="switch" type="success"   style="padding: 10px;margin-left: 100px"@click="gotoPage()">单步执行可视化</el-button>-->
         </el-col>
       </el-row>
     </div>
@@ -152,6 +144,8 @@
             "sql",
           ],
           cmMode: "text/x-java", //codeMirror模式
+          // showVis: false,
+          // showCode:true
         };
       },
       created() {
@@ -180,102 +174,103 @@
               this.cmMode = "python";
           }
         },
+
         //获取内容
         getValue() {
           let content = this.$refs.cmEditor.getValue();
           console.log(content);
           return content
         },
-        fenchData(){
+        fenchData() {
           let topicID = this.$route.params.topicId
           this.$store.dispatch('topics/getTopicInfo', {topicID: topicID}).then(data => {
-              this.topicData.id = data.id
-              this.topicData.topicName = data.topicName
-              this.topicData.timeLimit = data.timeLimit
-              this.topicData.spaceLimit = data.spaceLimit
-              this.topicData.topicIntro = data.topicIntro
-              this.topicData.inputIntro = data.inputIntro
-              this.topicData.outputIntro = data.outputIntro
-              this.topicData.topicPs = data.topicPs
-              this.topicData.favorite = data.favorite
+            this.topicData.id = data.id
+            this.topicData.topicName = data.topicName
+            this.topicData.timeLimit = data.timeLimit
+            this.topicData.spaceLimit = data.spaceLimit
+            this.topicData.topicIntro = data.topicIntro
+            this.topicData.inputIntro = data.inputIntro
+            this.topicData.outputIntro = data.outputIntro
+            this.topicData.topicPs = data.topicPs
+            this.topicData.favorite = data.favorite
           }).catch(error => {
           })
         },
-        cancelFav(){
+        cancelFav() {
           let topicID = this.$route.params.topicId
           this.$store.dispatch('topics/cancelFav', {topicID: topicID}).then(data => {
-            if(data.success){
+            if (data.success) {
               this.topicData.favorite = false
             }
           }).catch(error => {
           })
         },
-        addFav(){
+        addFav() {
           let topicID = this.$route.params.topicId
           this.$store.dispatch('topics/addFav', {topicID: topicID}).then(data => {
-            if(data.success){
+            if (data.success) {
               this.topicData.favorite = true
             }
           }).catch(error => {
           })
         },
-        submitAnswer(){
+        submitAnswer() {
           this.subStatus = false
           this.answerId = 0
           let formdata = new FormData()
           const content = this.getValue()
-          if(content){
-            formdata.append('topicId',this.$route.params.topicId)
-            formdata.append('content',content)
+          if (content) {
+            formdata.append('topicId', this.$route.params.topicId)
+            formdata.append('content', content)
             this.AnswerData.topicID = this.$route.params.topicId
             this.AnswerData.content = content
             let languageType = this.cmMode
-            if(languageType === 'python'){
-              formdata.append('languageName','PYTHON')
+            if (languageType === 'python') {
+              formdata.append('languageName', 'PYTHON')
               formdata.append('languageId', 3)
               this.AnswerData.languageName = 'PYTHON'
               this.AnswerData.languageId = 3
-            }else if(languageType === 'text/x-java'){
-              formdata.append('languageName','JAVA')
+            } else if (languageType === 'text/x-java') {
+              formdata.append('languageName', 'JAVA')
               formdata.append('languageId', 1)
               this.AnswerData.languageName = 'JAVA'
               this.AnswerData.languageId = 1
-            }else if(languageType === 'text/x-c++src'){
-              formdata.append('languageName','C++')
+            } else if (languageType === 'text/x-c++src') {
+              formdata.append('languageName', 'C++')
               formdata.append('languageId', 2)
               this.AnswerData.languageName = 'C++'
               this.AnswerData.languageId = 2
-            }else {
-              formdata.append('languageName','Others')
+            } else {
+              formdata.append('languageName', 'Others')
               formdata.append('languageId', 0)
               this.AnswerData.languageName = 'Others'
               this.AnswerData.languageId = 0
             }
 
             this.$store.dispatch('topics/submitAnswer', formdata).then(data => {
-              if(data.success){
+              if (data.success) {
                 this.subStatus = true
                 this.answerId = data.data["answerId"]
               }
             }).catch(error => {
             })
-          }else {
+          } else {
           }
         },
-        getAnswerStatus(){
+        getAnswerStatus() {
           this.getanswerStatus = false
           let result = "<strong>代码正在执行，请稍后查看运行结果...</strong>"
 
           this.$store.dispatch('topics/getAnswerStatus', {answerId: this.answerId}).then(data => {
-            if(data.success){
+            if (data.success) {
               this.getanswerStatus = true
               this.answerStatusData.answerStatus = data.data['answerStatus']
               this.answerStatusData.answerStatusMsg = data.data['answerStatusMsg']
               this.answerStatusData.executeDetailMsg = data.data['executeDetailMsg']
-              if(!data.data['answerStatus']){
+              if (!data.data['answerStatus']) {
                 result = '<strong>答题情况: </strong><strong style="color:red">Failed!</strong><br/>' +
                   '<strong>DetailInfo: </strong><strong style="color:orange">' + this.answerStatusData.executeDetailMsg + '</strong><br/>'
-              }else{
+              } else {
                 result = '<strong  style="color:green">Accpted!</strong><br/>'
               }
               this.createResultBox(result)
@@ -286,7 +281,7 @@
           })
 
         },
-        createSubBox(){
+        createSubBox() {
           const h = this.$createElement;
           this.$msgbox({
             title: '提交代码',
@@ -311,16 +306,16 @@
 
                 setTimeout(() => {
 
-                  if(this.subStatus){
+                  if (this.subStatus) {
                     setTimeout(() => {
                       instance.showCancelButton = true
                       instance.showClose = true
                       instance.showConfirmButton = false
                       instance.confirmButtonLoading = false;
                       instance.message = "提交成功，关闭弹窗查看答题情况"
-                      instance.cancelButtonText= '查看答题情况'
+                      instance.cancelButtonText = '查看答题情况'
                     }, 300);
-                  }else {
+                  } else {
                     setTimeout(() => {
                       instance.showCancelButton = true
                       instance.showClose = true
@@ -336,27 +331,28 @@
             },
           }).then(() => {
 
-          }).catch(e=>e);
+          }).catch(e => e);
         },
-        createResultBox(result){
-          if(this.answerId!==0 && this.subStatus){
+        createResultBox(result) {
+          if (this.answerId !== 0 && this.subStatus) {
             this.$alert(
               result,
               '答题情况',
               {
                 dangerouslyUseHTMLString: true
-              }).catch(e=>e);
-          }else{
+              }).catch(e => e);
+          } else {
             this.$alert(
               '<strong>尚未提交代码，请重新提交代码</strong>',
               '答题情况',
               {
                 dangerouslyUseHTMLString: true
-              }).catch(e=>e);
+              }).catch(e => e);
           }
         },
+
       }
-    }
+      }
 </script>
 
 <style lang="scss" scoped>
