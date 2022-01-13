@@ -1,5 +1,5 @@
 import { getTopicInfo, cancelFav, addFav, submitAnswer, getAnswerStatus, searchbyPName,
-  getDiscussionByTopicId, giveOneLike, addNewDiscussion } from '../../api/topics'
+  getDiscussionByTopicId, giveOneLike, addNewDiscussion ,submitCodeGraph} from '../../api/topics'
 import {getToken, removeToken, setToken} from "../../utils/auth";
 import {resetRouter} from "../../router";
 import {register} from "../../api/user";
@@ -143,6 +143,16 @@ const actions = {
     const {topicId, parentId, content, submit_time} = discussionData
     return new Promise((resolve, reject) => {
       addNewDiscussion({ topicId:topicId, parentId:parentId, content:content, submit_time:submit_time }).then(res => {
+        resolve(res)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  submitCodeGraph({ commit }, subInfo) {
+    return new Promise((resolve, reject) => {
+      submitCodeGraph(subInfo).then(res => {
         resolve(res)
       }).catch(error => {
         reject(error)

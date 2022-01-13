@@ -70,3 +70,12 @@ export function addNewDiscussion(data) {
     params: data
   })
 }
+
+export function submitCodeGraph(keywords,pageRequest ) {
+  return request({
+    url: '/',
+    method: 'post',
+    data: data
+  })
+
+}
