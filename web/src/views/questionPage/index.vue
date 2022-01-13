@@ -644,35 +644,30 @@
           // this.discussionData = this.emptyData /* 假数据 */
           // this.discussionData = this.validData /* 假数据 */
           // let resData = this.testDataEmpty /* 测试数据为空 */
-          let resData = this.testDataSuccess /* 测试数据不为空 */
-          console.log(resData.message)
-          if(resData.success){
-            this.discussionData = resData.data
-            console.log(this.discussionData)
-            this.discussionStatus = true
-          } else {
-            this.discussionStatus = false
-          }
+          // let resData = this.testDataSuccess /* 测试数据不为空 */
+          // console.log(resData.message)
+          // if(resData.success){
+          //   this.discussionData = resData.data
+          //   console.log(this.discussionData)
+          //   this.discussionStatus = true
+          // } else {
+          //   this.discussionStatus = false
+          // }
           /* 传递参数：topicId */
-          // let topicID = this.topicData.id
-          // this.$store.dispatch('topics/getDiscussionByTopicId', {topicID: topicID}).then(data => {
-          //   console.log(data)
-          //   this.discussionData = data
-          //   if (this.discussionData.success) { /* 成功从服务器获得数据 */
-          //     // this.msg = this.discussionData.message
-          //     if (this.discussionData.code === 200) {
-          //       this.discussionStatus = true
-          //       this.msg = '讨论区有数据'
-          //     } else {
-          //       this.discussionStatus = false
-          //       this.msg = '讨论区无数据'
-          //     }
-          //   } else { /* 服务器无响应 */
-          //     this.msg = '500'
-          //     console.log(this.msg)
-          //   }
-          // }).catch(error => {
-          // })
+          let topicID = this.$route.params.topicId
+          this.$store.dispatch('topics/getDiscussionByTopicId', {topicID: topicID}).then(data => {
+            console.log("连接成功");
+            console.log(data)
+            if (data.code === 200) {
+              this.discussionStatus = true
+              this.msg = '讨论区有数据'
+            } else {
+              this.discussionStatus = false
+              this.msg = '讨论区无数据'
+            }
+            console.log(this.msg)
+            this.discussionData = data.data
+          })
         },
         /* 平滑定位到讨论讨论区 */
         jumpDiscussionArea (index) {
@@ -780,21 +775,19 @@
         /* 添加新讨论(待完善) */
         addNewDiscussion () {
           /* 传递参数：topicId=this.topicData.topicId, parent_id=-1, submitTime, content=this.discussion_text*/
-          let topicId = this.topicData.topicId
+          let topicId = this.$route.params.topicId
           let parentId = -1
           let content = this.discussion_text
           let now = new Date()
-          let submitTime = format(now, 'YYYY-MM-DD HH:mm:ss')
-          console.log(topicId, parentId, content, submitTime)
+          let submit_time = format(now, 'YYYY-MM-DD HH:mm:ss')
+          console.log(topicId, parentId, content, submit_time)
           this.discussion_text = ''
           this.$store.dispatch('topics/addNewDiscussion', {
-          topicID: topicId,
-          parentId: parentId,
-          content: content,
-          submitTime: submitTime
-          }).then(data => {
-            console.log(data)
-          }).catch(error => {
+            topicId: topicId,
+            parentId: parentId,
+            content: content,
+            submit_time: submit_time
+          }).then().catch(error => {
           })
           /* 强制刷新跳转 */
           // this.$router.go(0)
@@ -802,21 +795,19 @@
         /* 添加新讨论(待完善) */
         addNewReply (discussionId) {
           /* 传递参数：topic_id, parent_id=discussionId, submitTime, content=this.discussion_text*/
-          let topicId=this.topicData.topicId
+          let topicId= this.$route.params.topicId
           let parentId = discussionId
           let content = this.reply_text
           let now = new Date()
-          let submitTime = format(now, 'YYYY-MM-DD HH:mm:ss')
-          console.log(topicId, parentId, content, submitTime)
+          let submit_time = format(now, 'YYYY-MM-DD HH:mm:ss')
+          console.log(topicId, parentId, content, submit_time)
           this.reply_text = ''
           this.$store.dispatch('topics/addNewDiscussion', {
-            topicID: topicId,
+            topicId: topicId,
             parentId: parentId,
             content: content,
-            submitTime: submitTime
-          }).then(data => {
-            console.log(data)
-          }).catch(error => {
+            submit_time: submit_time
+          }).then().catch(error => {
           })
           /* 强制刷新跳转 */
           // this.$router.go(0)

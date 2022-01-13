@@ -1,4 +1,5 @@
-import { getTopicInfo, cancelFav, addFav, submitAnswer, getAnswerStatus, searchbyPName } from '../../api/topics'
+import { getTopicInfo, cancelFav, addFav, submitAnswer, getAnswerStatus, searchbyPName,
+  getDiscussionByTopicId, giveOneLike, addNewDiscussion } from '../../api/topics'
 import {getToken, removeToken, setToken} from "../../utils/auth";
 import {resetRouter} from "../../router";
 import {register} from "../../api/user";
@@ -127,9 +128,10 @@ const actions = {
     })
   },
 
-  giveOneLike({ commit }, { discussionID }) {
+  giveOneLike({ commit }, discussionData) {
+    const {discussionId} = discussionData
     return new Promise((resolve, reject) => {
-      giveOneLike(discussionID).then(res => {
+      giveOneLike({discussionId:discussionId}).then(res => {
         resolve(res)
       }).catch(error => {
         reject(error)
@@ -138,9 +140,9 @@ const actions = {
   },
 
   addNewDiscussion({ commit }, discussionData) {
-    const {topicId, parentId, content, submitTime} = discussionData
+    const {topicId, parentId, content, submit_time} = discussionData
     return new Promise((resolve, reject) => {
-      addNewDiscussion({ topicId:topicId, parentId:parentId, content:content, submitTime:submitTime }).then(res => {
+      addNewDiscussion({ topicId:topicId, parentId:parentId, content:content, submit_time:submit_time }).then(res => {
         resolve(res)
       }).catch(error => {
         reject(error)

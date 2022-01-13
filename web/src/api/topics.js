@@ -50,7 +50,7 @@ export function searchbyPName(keywords,pageRequest ) {
 
 export function getDiscussionByTopicId(topicID) {
   return request({
-    url: '/getDiscussionByTopicId/' + topicID,
+    url: '/getDiscussionByTopicId?topicId=' + topicID,
     method: 'get'
   })
 }
@@ -59,7 +59,7 @@ export function giveOneLike(data) {
   return request({
     url: '/giveOneLike',
     method: 'post',
-    data: data
+    params: data
   })
 }
 
@@ -67,6 +67,6 @@ export function addNewDiscussion(data) {
   return request({
     url: '/addNewDiscussion',
     method: 'post',
-    data: data
+    params: data
   })
 }
