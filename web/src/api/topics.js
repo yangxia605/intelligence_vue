@@ -48,6 +48,29 @@ export function searchbyPName(keywords,pageRequest ) {
 
 }
 
+export function getDiscussionByTopicId(topicID) {
+  return request({
+    url: '/getDiscussionByTopicId?topicId=' + topicID,
+    method: 'get'
+  })
+}
+
+export function giveOneLike(data) {
+  return request({
+    url: '/giveOneLike',
+    method: 'post',
+    params: data
+  })
+}
+
+export function addNewDiscussion(data) {
+  return request({
+    url: '/addNewDiscussion',
+    method: 'post',
+    params: data
+  })
+}
+
 export function submitCodeGraph(keywords,pageRequest ) {
   return request({
     url: '/',
