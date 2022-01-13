@@ -96,19 +96,25 @@
     components: {
       codemirror
     },
-    props: ["cmTheme", "cmMode", "autoFormatJson", "jsonIndentation"],
+    props: ["cmTheme", "cmMode", "autoFormatJson", "jsonIndentation", "editorValue"],
     data() {
       return {
-        editorValue: "# code here",  //初始代码
+        editorValue:  //初始代码
+          'public class Main{\n' +
+          '\tpublic static int main(){\n' +
+          '\t\t// code here\n' +
+          '\t\treturn answer;\n' +
+          '\t}\n' +
+          '}',
         cmOptions: {
           theme:
             !this.cmTheme || this.cmTheme == "default"
               ? "blackboard"
               : this.cmTheme,
-          //<!--//默认python高亮显示-->
+          //<!--//默认java高亮显示-->
           mode:
             !this.cmMode || this.cmMode == "default"
-              ? "python"
+              ? "text/x-java"
               : this.cmMode,
           //<!--//代码折叠-->
           lineWrapping: true,

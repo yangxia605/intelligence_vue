@@ -1,4 +1,5 @@
-import { getTopicInfo, cancelFav, addFav, submitAnswer, getAnswerStatus, searchbyPName } from '../../api/topics'
+import { getTopicInfo, cancelFav, addFav, submitAnswer, getAnswerStatus, searchbyPName,
+  getDiscussionByTopicId, giveOneLike, addNewDiscussion ,submitCodeGraph} from '../../api/topics'
 import {getToken, removeToken, setToken} from "../../utils/auth";
 import {resetRouter} from "../../router";
 import {register} from "../../api/user";
@@ -116,6 +117,48 @@ const actions = {
   //     })
   //   })
   // },
+
+  getDiscussionByTopicId({ commit }, { topicID }) {
+    return new Promise((resolve, reject) => {
+      getDiscussionByTopicId(topicID ).then(res => {
+        resolve(res)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  giveOneLike({ commit }, discussionData) {
+    const {discussionId} = discussionData
+    return new Promise((resolve, reject) => {
+      giveOneLike({discussionId:discussionId}).then(res => {
+        resolve(res)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  addNewDiscussion({ commit }, discussionData) {
+    const {topicId, parentId, content, submit_time} = discussionData
+    return new Promise((resolve, reject) => {
+      addNewDiscussion({ topicId:topicId, parentId:parentId, content:content, submit_time:submit_time }).then(res => {
+        resolve(res)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  submitCodeGraph({ commit }, subInfo) {
+    return new Promise((resolve, reject) => {
+      submitCodeGraph(subInfo).then(res => {
+        resolve(res)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
 
 
 }
