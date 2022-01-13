@@ -101,11 +101,16 @@
         </el-tab-pane>
         <el-tab-pane label="程序流程图" name="flowchart">
           <h3 class="subject-item-title" align="left">程序流程图</h3>
+          <el-steps :active="active" finish-status="success"  align-center>
+            <el-step title="代码注释生成"></el-step>
+            <el-step title="程序流程图"></el-step>
+          </el-steps>
           <el-row :gutter="20">
             <el-col :span="12">
               <div class="grid-content topic_window" >
                 <div align="left">
-                  <img :src="FC_img" class="image">
+                  <textarea v-if="active < 2"></textarea>
+                  <img :src="FC_img" class="image" v-if="active > 1">
                 </div>
               </div>
             </el-col>
@@ -128,18 +133,29 @@
                     </el-select>
                   </div>
                   <my_cm  class="code-edit"
+                          ref="cmEditor_COM"
+                          :cmTheme="cmTheme"
+                          :cmMode="cmMode"
+                          :editorValue="com_code"
+                          v-if="active == 0">
+                  </my_cm>
+                  <my_cm  class="code-edit"
                           ref="cmEditor_FC"
                           :cmTheme="cmTheme"
                           :cmMode="cmMode"
-                          :editorValue="sum_code">
+                          :editorValue="sum_code"
+                          v-if="active > 0">
                   </my_cm>
                 </div>
-                <el-button type="primary" style="padding: 10px;"   @click="submitCode('sum_code')">提交代码生成代码注释</el-button>
-                <el-button type="primary" style="padding: 10px;"   @click="submitCode('FC')">提交注释代码生成流程图</el-button>
+                <el-button type="primary" style="padding: 10px;"   @click="submitCode('sum_code')" v-if="active == 0">提交代码生成代码注释</el-button>
+                <el-button type="primary" style="padding: 10px;"   @click="submitCode('FC')" v-if="active > 0">提交注释代码生成流程图</el-button>
               </div>
             </el-col>
 
           </el-row>
+          <el-button style="margin-top: 12px;" @click="forward" v-if="active > 0">上一步</el-button>
+          <el-button style="margin-top: 12px;" @click="next" v-if="active < 2">下一步</el-button>
+
         </el-tab-pane>
       </el-tabs>
 
@@ -160,6 +176,7 @@ export default {
   name: "codereader",
   data() {
     return {
+      active: 0,
       graphcards: 'callgraph',
       callGraph_img: "static\\person.jpg",
       AST_img: "static\\person.jpg",
@@ -178,9 +195,12 @@ export default {
         "cond4471501392(no)->sub4471501584\n" +
         "sub4471501584(right)->op4471442064",
       FC_img: "static\\person.jpg",
-      sum_code:
+      com_code:
         '# Python is Supported Now\n' +
         '# code here',
+      sum_code:
+        '# Code Comment is generated automatically\n' +
+        '# add more comments',
       graphCodeData: {
         graphtype: '',
         content: '',
@@ -205,6 +225,12 @@ export default {
     clearInterval(this.myInterval)
   },
   methods: {
+    forward() {
+      if (this.active > 0) this.active--;
+    },
+    next() {
+      if (this.active++ > 1) this.active = 0;
+    },
     handleClick(tab, event) {
       console.log(tab, event);
     },
@@ -274,8 +300,10 @@ export default {
       }else if(graphtype==="AST"){
         content = this.$refs.cmEditor_AST.getValue();
       }else if(graphtype==="sum_code"){
-        content = this.$refs.cmEditor_FC.getValue();
+        if (this.active++ > 1) this.active = 0;
+        content = this.$refs.cmEditor_COM.getValue();
       }else if(graphtype==="FC"){
+        if (this.active++ > 1) this.active = 0;
         content = this.$refs.cmEditor_FC.getValue();
       }
       if(content){
@@ -296,22 +324,40 @@ export default {
           this.graphCodeData.languageId = 0
         }
 
-        this.$store.dispatch('topics/submitCodeGraph', formdata).then(data => {
-          if(data.success){
-            this.subStatus = true
-            if (data.data["graphtype"]==="callGraph"){
-              this.callGraph_img = data.data["img"]
-            }else if(data.data["graphtype"]==="AST"){
-              this.AST_img_code = data.data["img"]
-              this.ASTcode2graph(this.AST_img_code)
-            }else if(data.data["graphtype"]==="sum_code"){
-              this.sum_code = data.data["code"]
-            }else if(data.data["graphtype"]==="FC"){
-              this.FC_img = data.data["img"]
-            }
-          }
-        }).catch(error => {
+        this.$axios({
+          url:"http://192.168.1.134:7777/submitCodeGraph",
+          method: 'get',
+          // headers:{
+          //   "Content-Type":"application/x-www-form-urlencoded"
+          // },
+          data: {
+            graphtype: formdata["graphtype"],
+            content: formdata["content"],
+            languageName: formdata["languageName"],
+            languageId: formdata["languageId"],
+          },
+        }).then(res => {
+          this.$message(res.data)
+        }).catch(() => {
+          this.$alert("fail")
         })
+
+        // this.$store.dispatch('topics/submitCodeGraph', formdata).then(data => {
+        //   if(data.success){
+        //     this.subStatus = true
+        //     if (data.data["graphtype"]==="callGraph"){
+        //       this.callGraph_img = data.data["img"]
+        //     }else if(data.data["graphtype"]==="AST"){
+        //       this.AST_img_code = data.data["img"]
+        //       this.ASTcode2graph(this.AST_img_code)
+        //     }else if(data.data["graphtype"]==="sum_code"){
+        //       this.sum_code = data.data["code"]
+        //     }else if(data.data["graphtype"]==="FC"){
+        //       this.FC_img = data.data["img"]
+        //     }
+        //   }
+        // }).catch(error => {
+        // })
       }else {
         this.$message.error("代码不能为空")
       }

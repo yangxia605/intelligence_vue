@@ -43,16 +43,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e918eab9-0a40-4ab1-bab2-cedeb355f8d9" name="Default Changelist" comment="search">
-      <change afterPath="$PROJECT_DIR$/web/src/views/codereader.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/intelligence_vue.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/intelligence_vue.iml" afterDir="false" />
+    <list default="true" id="e918eab9-0a40-4ab1-bab2-cedeb355f8d9" name="Default Changelist" comment="flowchart_init">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/api/topics.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/api/topics.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/components/codemirror/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/codemirror/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/router/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/store/modules/topics.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/store/modules/topics.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/views/questionPage/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/views/questionPage/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/views/codereader.vue" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/views/codereader.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,7 +132,17 @@
       <workItem from="1637632532048" duration="2063000" />
       <workItem from="1638799960042" duration="728000" />
       <workItem from="1638838250443" duration="10091000" />
-      <workItem from="1639208713903" duration="15504000" />
+      <workItem from="1639208713903" duration="15751000" />
+      <workItem from="1639291943471" duration="934000" />
+      <workItem from="1639383302761" duration="1190000" />
+      <workItem from="1640052105593" duration="705000" />
+      <workItem from="1641259510861" duration="4878000" />
+      <workItem from="1641346798836" duration="9473000" />
+      <workItem from="1641817341946" duration="3118000" />
+      <workItem from="1641864186855" duration="594000" />
+      <workItem from="1641952848394" duration="1044000" />
+      <workItem from="1641955414824" duration="3619000" />
+      <workItem from="1642043692995" duration="545000" />
     </task>
     <task id="LOCAL-00001" summary="新增answerStatusMsg、executeDetailMsg">
       <created>1601348591623</created>
@@ -176,7 +179,14 @@
       <option name="project" value="LOCAL" />
       <updated>1636440228327</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="flowchart_init">
+      <created>1639230609283</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1639230609283</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -208,41 +218,42 @@
     <MESSAGE value="新增answerStatusMsg、executeDetailMsg" />
     <MESSAGE value="修复注册" />
     <MESSAGE value="search" />
-    <option name="LAST_COMMIT_MESSAGE" value="search" />
+    <MESSAGE value="flowchart_init" />
+    <option name="LAST_COMMIT_MESSAGE" value="flowchart_init" />
   </component>
   <component name="WindowStateProjectService">
     <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1636370093313">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1636370093313" />
-    <state width="745" height="203" key="GridCell.Tab.0.bottom" timestamp="1639228110572">
+    <state width="592" height="79" key="GridCell.Tab.0.bottom" timestamp="1641995410317">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="745" height="203" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1639228110572" />
-    <state width="745" height="203" key="GridCell.Tab.0.center" timestamp="1639228110572">
+    <state width="592" height="79" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1641995410317" />
+    <state width="592" height="79" key="GridCell.Tab.0.center" timestamp="1641995410317">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="745" height="203" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1639228110572" />
-    <state width="745" height="203" key="GridCell.Tab.0.left" timestamp="1639228110571">
+    <state width="592" height="79" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1641995410317" />
+    <state width="592" height="79" key="GridCell.Tab.0.left" timestamp="1641995410316">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="745" height="203" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1639228110571" />
-    <state width="745" height="203" key="GridCell.Tab.0.right" timestamp="1639228110572">
+    <state width="592" height="79" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1641995410316" />
+    <state width="592" height="79" key="GridCell.Tab.0.right" timestamp="1641995410317">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="745" height="203" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1639228110572" />
-    <state x="147" y="65" key="MergeDialog" timestamp="1635825743727">
+    <state width="592" height="79" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1641995410317" />
+    <state x="147" y="65" key="MergeDialog" timestamp="1639292456243">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="147" y="65" key="MergeDialog/0.0.1536.824@0.0.1536.824" timestamp="1635825743727" />
-    <state x="403" y="173" key="MultipleFileMergeDialog" timestamp="1635825743762">
+    <state x="147" y="65" key="MergeDialog/0.0.1536.824@0.0.1536.824" timestamp="1639292456243" />
+    <state x="403" y="173" key="MultipleFileMergeDialog" timestamp="1639292456253">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="403" y="173" key="MultipleFileMergeDialog/0.0.1536.824@0.0.1536.824" timestamp="1635825743762" />
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1636440939396">
+    <state x="403" y="173" key="MultipleFileMergeDialog/0.0.1536.824@0.0.1536.824" timestamp="1639292456253" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1641261527220">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1636440939396" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1641261527220" />
     <state x="94" y="100" width="581" height="630" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1635821697734">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
