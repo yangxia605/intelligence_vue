@@ -38,11 +38,26 @@
         <el-col :span="12" align="left" >
           <div class="grid-content topic_window"  >
             <div class="code-mirror-div" >
+              <div class="tool-bar" style="">
+                <span style="color: whitesmoke;font-size:14px">编程语言</span>
+                <el-select
+                  v-model="cmEditorMode"
+                  size="mini"
+                  style="width:100px"
+                  @change="onEditorModeChange">
+                  <el-option
+                    v-for="item in cmEditorModeOptions"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  ></el-option>
+                </el-select>
+              </div>
               <my_cm  class="code-edit"
-                      ref="cmEditor"
+                      ref="cmEditor_qb"
                       :cmTheme="cmTheme"
                       :cmMode="cmMode"
-                      :value="curCode"
+                      :editorValue="curCode"
                       >
               </my_cm>
 
@@ -135,7 +150,7 @@
                 </div>
                 <div style="float: right">
                   <!--提交时间-->
-                  <span class="time" style="font-size: 12px;padding-right: 8px;color: gray">{{ item.discussionResponse.submitTime }}</span>
+                  <span class="time" style="font-size: 12px;padding-right: 8px;color: gray">{{ item.discussionResponse.submitTime}}</span>
                   <!--点赞数，包括点赞事件-->
                   <el-button
                     type="text"
@@ -240,6 +255,7 @@
 <script>
 
     import axios from "axios"
+    import moment from 'moment'
     import format from '../../assets/js/datetimeFormat'
     export default {
         name: "index",
@@ -277,8 +293,8 @@
 
 
           curCode:  // 默认代码模板
-            'public class Main{\n' +
-            '\tpublic static int main(){\n' +
+            'class Main{\n' +
+            '\tpublic int main(){\n' +
             '\t\t// code here\n' +
             '\t\treturn answer;\n' +
             '\t}\n' +
@@ -308,74 +324,74 @@
             "code": 500,
             "data": null
           },
-          testDataSuccess: {
-            "success": true,
-            "message": "success",
-            "code": 200,
-            "data": [
-              {
-                "discussionResponse": {
-                  "id": 2,
-                  "content": "1",
-                  "topicId": 1,
-                  "submitTime": 1637563160000,
-                  "userId": 1,
-                  "parentId": -1,
-                  "likeNum": 2
-                },
-                "reply": [
-                  {
-                    "id": 4,
-                    "content": "111",
-                    "topicId": 1,
-                    "submitTime": 1637639452954,
-                    "userId": 1,
-                    "parentId": 2,
-                    "likeNum": 0
-                  },
-                  {
-                    "id": 3,
-                    "content": "1",
-                    "topicId": 1,
-                    "submitTime": 1637639134627,
-                    "userId": 1,
-                    "parentId": 2,
-                    "likeNum": 2
-                  },
-                  {
-                    "id": 7,
-                    "content": "1111",
-                    "topicId": 1,
-                    "submitTime": 1637759332168,
-                    "userId": 1,
-                    "parentId": 2,
-                    "likeNum": 0
-                  },
-                  {
-                    "id": 8,
-                    "content": "1111",
-                    "topicId": 1,
-                    "submitTime": 1637849313000,
-                    "userId": 5,
-                    "parentId": 2,
-                    "likeNum": 0
-                  }
-                ]
-              },
-              {
-                "discussionResponse": {
-                  "id": 6,
-                  "content": "10101",
-                  "topicId": 1,
-                  "submitTime": 1637757986716,
-                  "userId": 1,
-                  "parentId": -1,
-                  "likeNum": 0
-                },
-                "reply": null
-              }
-            ]
-          },
+          // testDataSuccess: {
+          //   "success": true,
+          //   "message": "success",
+          //   "code": 200,
+          //   "data": [
+          //     {
+          //       "discussionResponse": {
+          //         "id": 2,
+          //         "content": "1",
+          //         "topicId": 1,
+          //         "submitTime": 1637563160000,
+          //         "userId": 1,
+          //         "parentId": -1,
+          //         "likeNum": 2
+          //       },
+          //       "reply": [
+          //         {
+          //           "id": 4,
+          //           "content": "111",
+          //           "topicId": 1,
+          //           "submitTime": 1637639452954,
+          //           "userId": 1,
+          //           "parentId": 2,
+          //           "likeNum": 0
+          //         },
+          //         {
+          //           "id": 3,
+          //           "content": "1",
+          //           "topicId": 1,
+          //           "submitTime": 1637639134627,
+          //           "userId": 1,
+          //           "parentId": 2,
+          //           "likeNum": 2
+          //         },
+          //         {
+          //           "id": 7,
+          //           "content": "1111",
+          //           "topicId": 1,
+          //           "submitTime": 1637759332168,
+          //           "userId": 1,
+          //           "parentId": 2,
+          //           "likeNum": 0
+          //         },
+          //         {
+          //           "id": 8,
+          //           "content": "1111",
+          //           "topicId": 1,
+          //           "submitTime": 1637849313000,
+          //           "userId": 5,
+          //           "parentId": 2,
+          //           "likeNum": 0
+          //         }
+          //       ]
+          //     },
+          //     {
+          //       "discussionResponse": {
+          //         "id": 6,
+          //         "content": "10101",
+          //         "topicId": 1,
+          //         "submitTime": 1637757986716,
+          //         "userId": 1,
+          //         "parentId": -1,
+          //         "likeNum": 0
+          //       },
+          //       "reply": null
+          //     }
+          //   ]
+          // },
 
           emptyData: {
             'success': true,
@@ -469,11 +485,12 @@
 
         //获取内容
         getValue() {
-          let content = this.$refs.cmEditor.getValue();
+          let content = this.$refs.cmEditor_qb.getValue();
           console.log(content);
           return content
         },
         fenchData() {
+          this.getDiscussionData()
           let topicID = this.$route.params.topicId
           this.$store.dispatch('topics/getTopicInfo', {topicID: topicID}).then(data => {
             this.topicData.id = data.id
@@ -543,6 +560,7 @@
               if (data.success) {
                 this.subStatus = true
                 this.answerId = data.data["answerId"]
+                this.curCode = content
               }
             }).catch(error => {
             })
@@ -671,6 +689,14 @@
             }
             console.log(this.msg)
             this.discussionData = data.data
+            for (var i=0;i<this.discussionData.length;i++){
+              this.discussionData[i].discussionResponse.submitTime = moment(this.discussionData[i].discussionResponse.submitTime).format("YYYY-MM-DD")
+              if (this.discussionData[i].reply){
+                for (var j=0;j<this.discussionData[i].reply.length;j++){
+                  this.discussionData[i].reply[j].submitTime = moment(this.discussionData[i].reply[j].submitTime).format("YYYY-MM-DD")
+                }
+              }
+            }
           })
         },
         /* 平滑定位到讨论讨论区 */
@@ -815,7 +841,15 @@
           })
           /* 强制刷新跳转 */
           // this.$router.go(0)
-        }
+        },
+        //时间格式化
+        dateFormat(row, column) {
+          var date = row[column.property];
+          if (date == undefined) {
+            return "";
+          }
+          return moment(date).format("YYYY-MM-DD HH:mm:ss");
+        },
       }
     }
 </script>

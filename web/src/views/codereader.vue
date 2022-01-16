@@ -58,13 +58,13 @@
 
           </el-row>
         </el-tab-pane>
-        <el-tab-pane label="代码结构" name="AST">
+        <el-tab-pane label="代码结构" name="AST" @click="handleClick">
           <h3 class="subject-item-title" align="left">代码结构</h3>
           <el-row :gutter="20">
             <el-col :span="12">
               <div class="grid-content topic_window" >
                 <div align="left">
-                  <div id="AST_graph"></div>
+                  <div id="AST_graph" class="svg"></div>
                 </div>
               </div>
             </el-col>
@@ -178,22 +178,92 @@ export default {
     return {
       active: 0,
       graphcards: 'callgraph',
-      callGraph_img: "static\\person.jpg",
+      callGraph_img: "static\\fc_samples\\sample_png.png",
       AST_img: "static\\person.jpg",
       AST_img_code:
-        "st4471442960=>start: start a_pyflow_test\n" +
-        "op4471442064=>operation: do something\n" +
-        "cond4471501392=>condition: Yes or No?\n" +
-        "io4471501648=>inputoutput: output: something...\n" +
-        "e4471501904=>end: end a_pyflow_test\n" +
-        "sub4471501584=>subroutine: A Subroutine\n" +
+        "op2=>operation: import queue\n" +
+        "op4=>operation: N = 105\n" +
+        "op6=>operation: M = 5005\n" +
+        "op8=>operation: INF = (2 ** 30)\n" +
+        "op10=>operation: class edge():\n" +
         "\n" +
-        "st4471442960->op4471442064\n" +
-        "op4471442064->cond4471501392\n" +
-        "cond4471501392(yes)->io4471501648\n" +
-        "io4471501648->e4471501904\n" +
-        "cond4471501392(no)->sub4471501584\n" +
-        "sub4471501584(right)->op4471442064",
+        "    def __init__(self, to, nxt, w):\n" +
+        "        self.to = to\n" +
+        "        self.nxt = nxt\n" +
+        "        self.w = w\n" +
+        "op12=>operation: a = []\n" +
+        "op14=>operation: head = [(- 1) for i in range(N)]\n" +
+        "op16=>operation: cnt = 0\n" +
+        "op18=>operation: cur = [(- 1) for i in range(N)]\n" +
+        "op20=>operation: dep = [0 for i in range(N)]\n" +
+        "st23=>start: start link\n" +
+        "io25=>inputoutput: input: u, v, w\n" +
+        "op28=>operation: global a, head, cnt\n" +
+        "sub30=>subroutine: a.append(edge(v, head[u], w))\n" +
+        "op32=>operation: head[u] = cnt\n" +
+        "op34=>operation: cnt += 1\n" +
+        "sub36=>subroutine: a.append(edge(u, head[v], 0))\n" +
+        "op38=>operation: head[v] = cnt\n" +
+        "op40=>operation: cnt += 1\n" +
+        "e42=>end: end link\n" +
+        "st46=>start: start bfs\n" +
+        "io48=>inputoutput: input: \n" +
+        "op51=>operation: global dep\n" +
+        "op53=>operation: q = queue.Queue()\n" +
+        "cond56=>operation: dep[i] = 0 while  i in range(n)\n" +
+        "op68=>operation: dep[s] = 1\n" +
+        "sub70=>subroutine: q.put(s)\n" +
+        "cond73=>condition: while (not q.empty())\n" +
+        "op118=>operation: u = q.get()\n" +
+        "op120=>operation: e = head[u]\n" +
+        "cond123=>condition: while (e != (- 1))\n" +
+        "cond143=>condition: if ((a[e].w != 0) and (dep[a[e].to] == 0))\n" +
+        "op147=>operation: dep[a[e].to] = (dep[u] + 1)\n" +
+        "sub149=>subroutine: q.put(a[e].to)\n" +
+        "op154=>operation: e = a[e].nxt\n" +
+        "io163=>inputoutput: output:  (dep[t] != 0)\n" +
+        "e161=>end: end function return\n" +
+        "\n" +
+        "op2->op4\n" +
+        "op4->op6\n" +
+        "op6->op8\n" +
+        "op8->op10\n" +
+        "op10->op12\n" +
+        "op12->op14\n" +
+        "op14->op16\n" +
+        "op16->op18\n" +
+        "op18->op20\n" +
+        "op20->st23\n" +
+        "st23->io25\n" +
+        "io25->op28\n" +
+        "op28->sub30\n" +
+        "sub30->op32\n" +
+        "op32->op34\n" +
+        "op34->sub36\n" +
+        "sub36->op38\n" +
+        "op38->op40\n" +
+        "op40->e42\n" +
+        "e42->st46\n" +
+        "st46->io48\n" +
+        "io48->op51\n" +
+        "op51->op53\n" +
+        "op53->cond56\n" +
+        "cond56->op68\n" +
+        "op68->sub70\n" +
+        "sub70->cond73\n" +
+        "cond73(yes)->op118\n" +
+        "op118->op120\n" +
+        "op120->cond123\n" +
+        "cond123(yes)->cond143\n" +
+        "cond143(yes)->op147\n" +
+        "op147->sub149\n" +
+        "sub149->op154\n" +
+        "op154(left)->cond123\n" +
+        "cond143(no)->op154\n" +
+        "cond123(no)->cond73\n" +
+        "cond73(no)->io163\n" +
+        "io163->e161\n",
+
       FC_img: "static\\person.jpg",
       com_code:
         '# Python is Supported Now\n' +
@@ -232,6 +302,9 @@ export default {
       if (this.active++ > 1) this.active = 0;
     },
     handleClick(tab, event) {
+      if (this.graphcards =="callgraph"){
+        this.ASTcode2graph(this.AST_img_code)
+      }
       console.log(tab, event);
     },
     // 切换语言
@@ -251,11 +324,10 @@ export default {
     },
     ASTcode2graph(astcode){
       var chart;
+      $("#AST_graph").html("");
       chart = flowchart.parse(astcode);
-      this.$message(astcode)
-      chart.drawSVG('AST_graph', {
-        'line-width': 3,
-        'maxWidth': 3,//ensures the flowcharts fits within a certian width
+      // this.$message(astcode)
+      chart.drawSVG('AST_graph', {'maxWidth': 500,//ensures the flowcharts fits within a certian width
         'line-length': 50,
         'text-margin': 10,
         'font-size': 14,
@@ -271,30 +343,27 @@ export default {
         'arrow-end': 'block',
         'scale': 1,
         'symbols': {
-          'start': {
-            'font-color': 'red',
+        'start': {
+          'font-color': 'red',
             'element-color': 'green',
             'fill': 'yellow'
-          },
-          'end':{
-            'class': 'end-element'
-          }
         },
+        'end':{
+          'class': 'end-element'
+        }
+      },
         'flowstate' : {
           'past' : { 'fill' : '#CCCCCC', 'font-size' : 12},
           'current' : {'fill' : 'yellow', 'font-color' : 'red', 'font-weight' : 'bold'},
           'future' : { 'fill' : '#FFFF99'},
-          'request' : { 'fill' : 'blue'},
           'invalid': {'fill' : '#444444'},
           'approved' : { 'fill' : '#58C4A3', 'font-size' : 12, 'yes-text' : 'APPROVED', 'no-text' : 'n/a' },
           'rejected' : { 'fill' : '#C45879', 'font-size' : 12, 'yes-text' : 'n/a', 'no-text' : 'REJECTED' }
         }
-      });
+    });
     },
-    submitCode(graphtype){
-      this.subStatus = false
+    getcontent(graphtype){
       let content = ""
-      let formdata = new FormData()
       if (graphtype==="callGraph") {
         content = this.$refs.cmEditor_callGraph.getValue();
       }else if(graphtype==="AST"){
@@ -306,6 +375,12 @@ export default {
         if (this.active++ > 1) this.active = 0;
         content = this.$refs.cmEditor_FC.getValue();
       }
+      return content
+    },
+    submitCode(graphtype){
+      this.subStatus = false
+      let formdata = new FormData()
+      let content = this.getcontent(graphtype)
       if(content){
         formdata.append('graphtype',graphtype)
         formdata.append('content',content)
@@ -324,26 +399,44 @@ export default {
           this.graphCodeData.languageId = 0
         }
 
-        this.$axios({
-          url:"http://192.168.1.134:7777/submitCodeGraph",
-          method: 'get',
-          // headers:{
-          //   "Content-Type":"application/x-www-form-urlencoded"
-          // },
-          data: {
-            graphtype: formdata["graphtype"],
-            content: formdata["content"],
-            languageName: formdata["languageName"],
-            languageId: formdata["languageId"],
-          },
-        }).then(res => {
-          this.$message(res.data)
-        }).catch(() => {
-          this.$alert("fail")
-        })
+        if (graphtype==="callGraph") {
+          content = this.$refs.cmEditor_callGraph.getValue();
+        }else if(graphtype==="AST"){
+          this.$axios({
+            url:"http://192.168.1.134:7777/submitCodeASTGraph",
+            method: 'post',
+            // headers:{
+            //   "Content-Type":"application/x-www-form-urlencoded"
+            // },
+            data: {
+              graphtype: formdata.get("graphtype"),
+              content: formdata.get("content"),
+              languageName: formdata.get("languageName"),
+              languageId: formdata.get("languageId"),
+            },
+          }).then(res => {
+            if (!res.data["success"]){
+              this.$alert(res.data["information"])
+            }else {
+              this.AST_img_code = res.data["ASTfc_code"]
+              this.ASTcode2graph(this.AST_img_code)
+            }
+          }).catch(() => {
+            this.$message("fail request")
+          })
+        }else if(graphtype==="sum_code"){
+          if (this.active++ > 1) this.active = 0;
+          content = this.$refs.cmEditor_COM.getValue();
+        }else if(graphtype==="FC"){
+          if (this.active++ > 1) this.active = 0;
+          content = this.$refs.cmEditor_FC.getValue();
+        }
+
+
+
 
         // this.$store.dispatch('topics/submitCodeGraph', formdata).then(data => {
-        //   if(data.success){
+        //   if(data.suc cess){
         //     this.subStatus = true
         //     if (data.data["graphtype"]==="callGraph"){
         //       this.callGraph_img = data.data["img"]
@@ -365,7 +458,11 @@ export default {
   }
 }
 </script>
+<style>
+.svg{
 
+}
+</style>
 <style lang="scss" scoped>
 .dashboard-editor-container {
   padding: 32px;

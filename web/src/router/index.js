@@ -67,22 +67,22 @@ export const constantRoutes = [
       meta: { title: '个人信息', icon: 'el-icon-s-custom' }
     }]
   },
-  {
-    path: '/',
-    component: Layout,
-    children: [{
-      path: '',
-      name: 'discussion',
-      component: () => import('../views/aboutMe/index'),
-      meta: { title: '讨论区', icon: 'el-icon-s-comment' }
-    }]
-  },
+  // {
+  //   path: '/',
+  //   component: Layout,
+  //   children: [{
+  //     path: '',
+  //     name: 'discussion',
+  //     component: () => import('../views/aboutMe/index'),
+  //     meta: { title: '讨论区', icon: 'el-icon-s-comment' }
+  //   }]
+  // },
   {
     path: '/codereader',
     component: Layout,
     children: [{
       path: '',
-      name: 'aboutme',
+      name: 'codereader',
       component: () => import('../views/codereader'),
       meta: { title: '代码阅读', icon: 'el-icon-s-opportunity' }
     }]
