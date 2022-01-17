@@ -49,7 +49,7 @@
                           ref="cmEditor_callGraph"
                           :cmTheme="cmTheme"
                           :cmMode="cmMode"
-                          :editorValue="editorValue">
+                          :editorValue="callgraph_code">
                   </my_cm>
                 </div>
                 <el-button type="primary" style="padding: 10px;"   @click="submitCode('callGraph')">提交代码生成函数调用图</el-button>
@@ -90,7 +90,7 @@
                           ref="cmEditor_AST"
                           :cmTheme="cmTheme"
                           :cmMode="cmMode"
-                          :editorValue="editorValue">
+                          :editorValue="AST_code">
                   </my_cm>
                 </div>
                 <el-button type="primary" style="padding: 10px;"   @click="submitCode('AST')">提交代码生成代码结构图</el-button>
@@ -105,12 +105,39 @@
             <el-step title="代码注释生成"></el-step>
             <el-step title="程序流程图"></el-step>
           </el-steps>
+          <div v-if="active > 0">
+              <el-table
+                v-model="sum_table"
+                :data="sum_table"
+                height="150"
+                border
+                :default-sort = "{prop: 'func_line'}"
+                style="width: 100%">
+                <el-table-column
+                  prop="func_line"
+                  label="行号"
+                  sortable
+                  width="80">
+                </el-table-column>
+                <el-table-column
+                  prop="func_name"
+                  label="Func Name"
+                  width="180">
+                </el-table-column>
+                <el-table-column
+                  prop="sum"
+                  label="摘要">
+                </el-table-column>
+              </el-table>
+          </div>
+          <el-divider></el-divider>
           <el-row :gutter="20">
             <el-col :span="12">
               <div class="grid-content topic_window" >
                 <div align="left">
-                  <textarea v-if="active < 2"></textarea>
-                  <img :src="FC_img" class="image" v-if="active > 1">
+                  <textarea v-if="active < 2" v-model="com_code" ref="com_code_textarea" class="textarea"><p>{{ com_code }}</p></textarea>
+                  <el-button v-if="active < 2" type="primary" style="padding: 10px;"   @click="copyToClipboard('com_code_textarea')">复制</el-button>
+                  <img :src="FC_img" class="image" v-if="active > 2">
                 </div>
               </div>
             </el-col>
@@ -136,26 +163,25 @@
                           ref="cmEditor_COM"
                           :cmTheme="cmTheme"
                           :cmMode="cmMode"
-                          :editorValue="com_code"
-                          v-if="active == 0">
+                          :editorValue="com_code_hit"
+                          v-if="active < 2">
                   </my_cm>
                   <my_cm  class="code-edit"
                           ref="cmEditor_FC"
                           :cmTheme="cmTheme"
                           :cmMode="cmMode"
-                          :editorValue="sum_code"
-                          v-if="active > 0">
+                          :editorValue="sum_code_hit"
+                          v-if="active > 1">
                   </my_cm>
                 </div>
-                <el-button type="primary" style="padding: 10px;"   @click="submitCode('sum_code')" v-if="active == 0">提交代码生成代码注释</el-button>
-                <el-button type="primary" style="padding: 10px;"   @click="submitCode('FC')" v-if="active > 0">提交注释代码生成流程图</el-button>
+                <el-button type="primary" style="padding: 10px;"   @click="submitCode('sum_code')" v-if="active < 2">提交代码生成代码注释</el-button>
+                <el-button type="primary" style="padding: 10px;"   @click="submitCode('FC')" v-if="active > 1">提交注释代码生成流程图</el-button>
+                <!--                <el-button style="margin-top: 12px;" @click="next" v-if="active == 0">下一步</el-button>-->
               </div>
             </el-col>
-
           </el-row>
           <el-button style="margin-top: 12px;" @click="forward" v-if="active > 0">上一步</el-button>
-          <el-button style="margin-top: 12px;" @click="next" v-if="active < 2">下一步</el-button>
-
+          <el-button style="margin-top: 12px;" @click="next" v-if="active < 3">下一步</el-button>
         </el-tab-pane>
       </el-tabs>
 
@@ -178,99 +204,16 @@ export default {
     return {
       active: 0,
       graphcards: 'callgraph',
-      callGraph_img: "static\\fc_samples\\sample_png.png",
-      AST_img: "static\\person.jpg",
-      AST_img_code:
-        "op2=>operation: import queue\n" +
-        "op4=>operation: N = 105\n" +
-        "op6=>operation: M = 5005\n" +
-        "op8=>operation: INF = (2 ** 30)\n" +
-        "op10=>operation: class edge():\n" +
-        "\n" +
-        "    def __init__(self, to, nxt, w):\n" +
-        "        self.to = to\n" +
-        "        self.nxt = nxt\n" +
-        "        self.w = w\n" +
-        "op12=>operation: a = []\n" +
-        "op14=>operation: head = [(- 1) for i in range(N)]\n" +
-        "op16=>operation: cnt = 0\n" +
-        "op18=>operation: cur = [(- 1) for i in range(N)]\n" +
-        "op20=>operation: dep = [0 for i in range(N)]\n" +
-        "st23=>start: start link\n" +
-        "io25=>inputoutput: input: u, v, w\n" +
-        "op28=>operation: global a, head, cnt\n" +
-        "sub30=>subroutine: a.append(edge(v, head[u], w))\n" +
-        "op32=>operation: head[u] = cnt\n" +
-        "op34=>operation: cnt += 1\n" +
-        "sub36=>subroutine: a.append(edge(u, head[v], 0))\n" +
-        "op38=>operation: head[v] = cnt\n" +
-        "op40=>operation: cnt += 1\n" +
-        "e42=>end: end link\n" +
-        "st46=>start: start bfs\n" +
-        "io48=>inputoutput: input: \n" +
-        "op51=>operation: global dep\n" +
-        "op53=>operation: q = queue.Queue()\n" +
-        "cond56=>operation: dep[i] = 0 while  i in range(n)\n" +
-        "op68=>operation: dep[s] = 1\n" +
-        "sub70=>subroutine: q.put(s)\n" +
-        "cond73=>condition: while (not q.empty())\n" +
-        "op118=>operation: u = q.get()\n" +
-        "op120=>operation: e = head[u]\n" +
-        "cond123=>condition: while (e != (- 1))\n" +
-        "cond143=>condition: if ((a[e].w != 0) and (dep[a[e].to] == 0))\n" +
-        "op147=>operation: dep[a[e].to] = (dep[u] + 1)\n" +
-        "sub149=>subroutine: q.put(a[e].to)\n" +
-        "op154=>operation: e = a[e].nxt\n" +
-        "io163=>inputoutput: output:  (dep[t] != 0)\n" +
-        "e161=>end: end function return\n" +
-        "\n" +
-        "op2->op4\n" +
-        "op4->op6\n" +
-        "op6->op8\n" +
-        "op8->op10\n" +
-        "op10->op12\n" +
-        "op12->op14\n" +
-        "op14->op16\n" +
-        "op16->op18\n" +
-        "op18->op20\n" +
-        "op20->st23\n" +
-        "st23->io25\n" +
-        "io25->op28\n" +
-        "op28->sub30\n" +
-        "sub30->op32\n" +
-        "op32->op34\n" +
-        "op34->sub36\n" +
-        "sub36->op38\n" +
-        "op38->op40\n" +
-        "op40->e42\n" +
-        "e42->st46\n" +
-        "st46->io48\n" +
-        "io48->op51\n" +
-        "op51->op53\n" +
-        "op53->cond56\n" +
-        "cond56->op68\n" +
-        "op68->sub70\n" +
-        "sub70->cond73\n" +
-        "cond73(yes)->op118\n" +
-        "op118->op120\n" +
-        "op120->cond123\n" +
-        "cond123(yes)->cond143\n" +
-        "cond143(yes)->op147\n" +
-        "op147->sub149\n" +
-        "sub149->op154\n" +
-        "op154(left)->cond123\n" +
-        "cond143(no)->op154\n" +
-        "cond123(no)->cond73\n" +
-        "cond73(no)->io163\n" +
-        "io163->e161\n",
-
-      FC_img: "static\\person.jpg",
-      com_code:
+      callGraph_img: "",
+      AST_img_code: "",
+      FC_img: "",
+      com_code_hit:
         '# Python is Supported Now\n' +
         '# code here',
-      sum_code:
+      sum_code_hit:
         '# Code Comment is generated automatically\n' +
         '# add more comments',
+      sum_table:[],
       graphCodeData: {
         graphtype: '',
         content: '',
@@ -280,6 +223,9 @@ export default {
       editorValue:  // 默认代码模板
         '# Python is Supported Now\n' +
         '# code here',
+      callgraph_code: this.editorValue,
+      AST_code: this.editorValue,
+      com_code: this.editorValue,
       cmTheme: "blackboard", // codeMirror主题
       cmEditorMode: "Python(3.6)", // 编辑模式
       // 编辑模式选项
@@ -295,16 +241,36 @@ export default {
     clearInterval(this.myInterval)
   },
   methods: {
+    copyToClipboard(elemRef){
+      let target;
+      let succeed = false;
+      if(this.$refs[elemRef]){
+        target = this.$refs[elemRef];
+        // 选择内容
+        let currentFocus = document.activeElement;
+        target.focus();
+        target.setSelectionRange(0, target.value.length);
+        // 复制内容
+        try {
+          succeed = document.execCommand("copy");
+          this.$message("内容复制成功");
+        } catch (e) {
+          succeed = false;
+        }
+        // 恢复焦点
+        if (currentFocus && typeof currentFocus.focus === "function") {
+          currentFocus.focus();
+        }
+      }
+      return succeed;
+    },
     forward() {
       if (this.active > 0) this.active--;
     },
     next() {
-      if (this.active++ > 1) this.active = 0;
+      if (this.active++ > 2) this.active = 0;
     },
     handleClick(tab, event) {
-      if (this.graphcards =="callgraph"){
-        this.ASTcode2graph(this.AST_img_code)
-      }
       console.log(tab, event);
     },
     // 切换语言
@@ -369,88 +335,123 @@ export default {
       }else if(graphtype==="AST"){
         content = this.$refs.cmEditor_AST.getValue();
       }else if(graphtype==="sum_code"){
-        if (this.active++ > 1) this.active = 0;
         content = this.$refs.cmEditor_COM.getValue();
       }else if(graphtype==="FC"){
-        if (this.active++ > 1) this.active = 0;
         content = this.$refs.cmEditor_FC.getValue();
       }
       return content
     },
     submitCode(graphtype){
       this.subStatus = false
-      let formdata = new FormData()
       let content = this.getcontent(graphtype)
       if(content){
-        formdata.append('graphtype',graphtype)
-        formdata.append('content',content)
         this.graphCodeData.graphtype = graphtype
         this.graphCodeData.content = content
         let languageType = this.cmMode
         if(languageType === 'python'){
-          formdata.append('languageName','PYTHON')
-          formdata.append('languageId', 3)
           this.graphCodeData.languageName = 'PYTHON'
           this.graphCodeData.languageId = 3
         }else {
-          formdata.append('languageName','Others')
-          formdata.append('languageId', 0)
           this.graphCodeData.languageName = 'Others'
           this.graphCodeData.languageId = 0
         }
 
         if (graphtype==="callGraph") {
-          content = this.$refs.cmEditor_callGraph.getValue();
-        }else if(graphtype==="AST"){
+          this.$axios({
+            url:"http://192.168.1.134:7777/submitCodecallGraph",
+            method: 'post',
+            responseType: 'blob',
+            data: {
+              graphtype: this.graphCodeData.graphtype,
+              content: this.graphCodeData.content,
+              languageName: this.graphCodeData.languageName,
+              languageId: this.graphCodeData.languageId,
+            },
+          }).then(res => {
+            this.callgraph_code = this.graphCodeData.content
+            this.callGraph_img = window.URL.createObjectURL(res.data)
+          }).catch(() => {
+            this.$message("fail request")
+          })
+        }
+        else if(graphtype==="AST"){
           this.$axios({
             url:"http://192.168.1.134:7777/submitCodeASTGraph",
             method: 'post',
-            // headers:{
-            //   "Content-Type":"application/x-www-form-urlencoded"
-            // },
             data: {
-              graphtype: formdata.get("graphtype"),
-              content: formdata.get("content"),
-              languageName: formdata.get("languageName"),
-              languageId: formdata.get("languageId"),
+              graphtype: this.graphCodeData.graphtype,
+              content: this.graphCodeData.content,
+              languageName: this.graphCodeData.languageName,
+              languageId: this.graphCodeData.languageId,
             },
           }).then(res => {
-            if (!res.data["success"]){
+            let success = res.data["success"]
+            this.AST_code = this.graphCodeData.content
+            if (!success){
               this.$alert(res.data["information"])
             }else {
               this.AST_img_code = res.data["ASTfc_code"]
               this.ASTcode2graph(this.AST_img_code)
             }
           }).catch(() => {
+            this.$message("Bad request. Check the code.")
+          })
+        }
+        else if(graphtype==="sum_code"){
+          this.$axios({
+            url:"http://192.168.1.134:7777/submitCodeComment",
+            method: 'post',
+            data: {
+              graphtype: this.graphCodeData.graphtype,
+              content: this.graphCodeData.content,
+              languageName: this.graphCodeData.languageName,
+              languageId: this.graphCodeData.languageId,
+            },
+          }).then(res => {
+            let success = res.data["success"]
+            if (success){
+              this.com_code_hit = this.graphCodeData.content
+              this.com_code = res.data["com_code"]
+              // this.$message("注释已生成")
+              this.sum_code_hit = res.data["com_code"]
+              this.active=1
+              let fun_sums = res.data["fun_sum"]
+              let sum_lines = res.data["sum_line"]
+              let fun_names = res.data["func_name"]
+              this.sum_table = []
+              for(var i =0;i<fun_sums.length;i++){
+                let item = {
+                  func_line: sum_lines[i],
+                  func_name: fun_names[i],
+                  sum: fun_sums[i]
+                }
+                this.sum_table[i] = item
+              }
+            }
+          }).catch(() => {
+            this.$message("Bad request. Check the code.")
+          })
+        }
+        else if(graphtype==="FC"){
+          this.$axios({
+            url:"http://192.168.1.134:7777/submitCodeFC",
+            method: 'post',
+            responseType: 'blob',
+            data: {
+              graphtype: this.graphCodeData.graphtype,
+              content: this.graphCodeData.content,
+              languageName: this.graphCodeData.languageName,
+              languageId: this.graphCodeData.languageId,
+            },
+          }).then(res => {
+            this.sum_code_hit = this.graphCodeData.content
+            this.FC_img = window.URL.createObjectURL(res.data)
+            this.active=3
+          }).catch(() => {
             this.$message("fail request")
           })
-        }else if(graphtype==="sum_code"){
-          if (this.active++ > 1) this.active = 0;
-          content = this.$refs.cmEditor_COM.getValue();
-        }else if(graphtype==="FC"){
-          if (this.active++ > 1) this.active = 0;
-          content = this.$refs.cmEditor_FC.getValue();
         }
 
-
-
-
-        // this.$store.dispatch('topics/submitCodeGraph', formdata).then(data => {
-        //   if(data.suc cess){
-        //     this.subStatus = true
-        //     if (data.data["graphtype"]==="callGraph"){
-        //       this.callGraph_img = data.data["img"]
-        //     }else if(data.data["graphtype"]==="AST"){
-        //       this.AST_img_code = data.data["img"]
-        //       this.ASTcode2graph(this.AST_img_code)
-        //     }else if(data.data["graphtype"]==="sum_code"){
-        //       this.sum_code = data.data["code"]
-        //     }else if(data.data["graphtype"]==="FC"){
-        //       this.FC_img = data.data["img"]
-        //     }
-        //   }
-        // }).catch(error => {
-        // })
       }else {
         this.$message.error("代码不能为空")
       }
@@ -573,7 +574,11 @@ export default {
   width: auto;
   max-width: 100%;
 }
-
+.textarea{
+  width: 100%;
+  height: auto;
+  min-height: 350px;
+}
 
 
 </style>
