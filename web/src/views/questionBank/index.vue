@@ -126,11 +126,11 @@
                   <!--
                   <button v-on:click="reset">重置搜索</button>
                   -->
-                  <el-button type="primary" icon="el-icon-top" v-on:click="orderidup"></el-button>
-                  <el-button type="primary" icon="el-icon-bottom" v-on:click="orderiddown"></el-button>
+                  <el-button type="primary" icon="el-icon-top" v-on:click="searchbyPName"></el-button>
+                  <el-button type="primary" icon="el-icon-bottom" v-on:click="searchbyPName"></el-button>
                   <el-table ref="filterTable"
                             :data="tableData" stripe="true" style="width:100%"
-                            :default-sort = "{prop: 'id', order: 'descending'}"
+                            :default-sort = "{prop: 'id', order: 'ascending'}"
                             v-loading="listLoading">
                     <el-table-column prop="id" label="题号" sortable>
                       <template slot-scope="scope">
@@ -293,10 +293,10 @@
       // 搜索题目
       searchbyPName(){
         this.listLoading = true
-        // this.searchPNameData.pageRequest =  {
-        //   page: this.currentPage,
-        //   offset: this.pagesize
-        // }
+         this.searchPNameData.pageRequest =  {
+           page: this.currentPage,
+           offset: this.pagesize
+         }
         this.$store.dispatch('topics/searchbyPName', this.searchPNameData).then((res) => {
           this.tableData = res.list;
           this.listLoading = false
@@ -307,10 +307,12 @@
       },
       //搜索
       searchall(){
+        this.currentPage=1
         this.$axios({
           url:"http://localhost:8080/getByPName?keywords=searchsome",
           method: 'get',
         }).then(res => {
+
           this.tableData = res.data.data;
           this.listLoading = false
         }).catch(() => {
@@ -334,6 +336,7 @@
         }).catch(() => {
           this.listLoading = false
         })
+
       },
       // 递减的排序
       orderiddown(){

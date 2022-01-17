@@ -43,28 +43,16 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e918eab9-0a40-4ab1-bab2-cedeb355f8d9" name="Default Changelist" comment="search">
-      <change afterPath="$PROJECT_DIR$/web/src/views/codereader.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/intelligence_vue.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/intelligence_vue.iml" afterDir="false" />
+    <list default="true" id="e918eab9-0a40-4ab1-bab2-cedeb355f8d9" name="Default Changelist" comment="新增answerStatusMsg、executeDetailMsg">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/api/topics.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/api/topics.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/components/codemirror/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/codemirror/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/router/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/store/modules/topics.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/store/modules/topics.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/views/questionPage/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/views/questionPage/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/components/Register.vue" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/Register.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/store/modules/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/store/modules/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/views/Login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/views/Login.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Vue Single File Component" />
-      </list>
-    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -83,11 +71,6 @@
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
     <property name="ts.external.directory.path" value="F:\CodeRepository\GitHub\intelligence_vue\web\node_modules\typescript\lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
-  </component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="F:\CodeRepository\GitHub\intelligence_vue\web\src\views" />
-    </key>
   </component>
   <component name="RunManager">
     <configuration name="web" type="js.build_tools.npm">
@@ -130,16 +113,7 @@
       <workItem from="1634125295749" duration="2075000" />
       <workItem from="1634606225153" duration="1636000" />
       <workItem from="1635383072803" duration="106000" />
-      <workItem from="1635815551337" duration="8371000" />
-      <workItem from="1636339849761" duration="14469000" />
-      <workItem from="1636419474073" duration="10839000" />
-      <workItem from="1636984323758" duration="594000" />
-      <workItem from="1637408730918" duration="3168000" />
-      <workItem from="1637477328717" duration="2097000" />
-      <workItem from="1637632532048" duration="2063000" />
-      <workItem from="1638799960042" duration="728000" />
-      <workItem from="1638838250443" duration="10091000" />
-      <workItem from="1639208713903" duration="15504000" />
+      <workItem from="1635815551337" duration="7025000" />
     </task>
     <task id="LOCAL-00001" summary="新增answerStatusMsg、executeDetailMsg">
       <created>1601348591623</created>
@@ -148,35 +122,7 @@
       <option name="project" value="LOCAL" />
       <updated>1601348591623</updated>
     </task>
-    <task id="LOCAL-00002" summary="修复注册">
-      <created>1635825410313</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1635825410313</updated>
-    </task>
-    <task id="LOCAL-00003" summary="search">
-      <created>1636362589068</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1636362589068</updated>
-    </task>
-    <task id="LOCAL-00004" summary="search">
-      <created>1636423808752</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1636423808752</updated>
-    </task>
-    <task id="LOCAL-00005" summary="search">
-      <created>1636440228327</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1636440228327</updated>
-    </task>
-    <option name="localTasksCounter" value="6" />
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -206,64 +152,32 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="新增answerStatusMsg、executeDetailMsg" />
-    <MESSAGE value="修复注册" />
-    <MESSAGE value="search" />
-    <option name="LAST_COMMIT_MESSAGE" value="search" />
+    <option name="LAST_COMMIT_MESSAGE" value="新增answerStatusMsg、executeDetailMsg" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1636370093313">
+    <state width="1515" height="471" key="GridCell.Tab.0.bottom" timestamp="1635824040359">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1636370093313" />
-    <state width="745" height="203" key="GridCell.Tab.0.bottom" timestamp="1639228110572">
+    <state width="1515" height="471" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1635824040359" />
+    <state width="1515" height="471" key="GridCell.Tab.0.center" timestamp="1635824040358">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="745" height="203" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1639228110572" />
-    <state width="745" height="203" key="GridCell.Tab.0.center" timestamp="1639228110572">
+    <state width="1515" height="471" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1635824040358" />
+    <state width="1515" height="471" key="GridCell.Tab.0.left" timestamp="1635824040358">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="745" height="203" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1639228110572" />
-    <state width="745" height="203" key="GridCell.Tab.0.left" timestamp="1639228110571">
+    <state width="1515" height="471" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1635824040358" />
+    <state width="1515" height="471" key="GridCell.Tab.0.right" timestamp="1635824040358">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="745" height="203" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1639228110571" />
-    <state width="745" height="203" key="GridCell.Tab.0.right" timestamp="1639228110572">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="745" height="203" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1639228110572" />
-    <state x="147" y="65" key="MergeDialog" timestamp="1635825743727">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="147" y="65" key="MergeDialog/0.0.1536.824@0.0.1536.824" timestamp="1635825743727" />
-    <state x="403" y="173" key="MultipleFileMergeDialog" timestamp="1635825743762">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="403" y="173" key="MultipleFileMergeDialog/0.0.1536.824@0.0.1536.824" timestamp="1635825743762" />
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1636440939396">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1636440939396" />
+    <state width="1515" height="471" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1635824040358" />
     <state x="94" y="100" width="581" height="630" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1635821697734">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="94" y="100" width="581" height="630" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1536.824@0.0.1536.824" timestamp="1635821697734" />
-    <state x="573" y="325" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1637410147402">
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1635825066607">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="573" y="325" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824@0.0.1536.824" timestamp="1637410147402" />
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1639210734131">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1639210734131" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/web/src/store/modules/topics.js</url>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1635825066607" />
   </component>
 </project>
