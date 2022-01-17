@@ -578,10 +578,18 @@
               this.answerStatusData.answerStatusMsg = data.data['answerStatusMsg']
               this.answerStatusData.executeDetailMsg = data.data['executeDetailMsg']
               if (!data.data['answerStatus']) {
-                result = '<strong>答题情况: </strong><strong style="color:red">Failed!</strong><br/>' +
-                  '<strong>DetailInfo: </strong><strong style="color:orange">' + this.answerStatusData.executeDetailMsg + '</strong><br/>'
-              } else {
-                result = '<strong  style="color:green">Accpted!</strong><br/>'
+                if(this.answerStatusData.answerStatusMsg === "COMPILE_FAILED"){
+                  result = '<strong>答题情况: </strong><strong style="color:red">编译错误，请检查您的代码！</strong><br/>'
+                    +'<strong>DetailInfo: </strong><strong style="color:orange">' + this.answerStatusData.executeDetailMsg + '</strong><br/>'
+
+                }else {
+                  result = '<strong>答题情况: </strong><strong style="color:red">编译通过，案例测试错误，请检查您的代码！</strong><br/>'
+                    +'<strong>DetailInfo: </strong><strong style="color:orange">' + this.answerStatusData.executeDetailMsg + '</strong><br/>'
+                }
+                //   +'<strong>DetailInfo: </strong><strong style="color:orange">' + this.answerStatusData.executeDetailMsg + '</strong><br/>'
+              }
+              else {
+                result = '<strong  style="color:green">测试全部通过！</strong><br/>'
               }
               this.createResultBox(result)
             }
